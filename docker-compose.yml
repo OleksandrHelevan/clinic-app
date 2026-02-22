@@ -1,0 +1,62 @@
+services:
+  patient-db:
+    image: postgres:15
+    container_name: patient-db
+    restart: always
+    environment:
+      POSTGRES_DB: patient_db
+      POSTGRES_USER: oleksandr
+      POSTGRES_PASSWORD: password
+      TZ: Europe/Kyiv
+    ports:
+      - "5432:5432"
+    volumes:
+      - patient-db-data:/var/lib/postgresql/data
+
+  doctor-db:
+    image: postgres:15
+    container_name: doctor-db
+    restart: always
+    environment:
+      POSTGRES_DB: doctor_db
+      POSTGRES_USER: oleksandr
+      POSTGRES_PASSWORD: password
+      TZ: Europe/Kyiv
+    ports:
+      - "5433:5432"
+    volumes:
+      - doctor-db-data:/var/lib/postgresql/data
+
+  medical-record-db:
+    image: postgres:15
+    container_name: medical-record-db
+    restart: always
+    environment:
+      POSTGRES_DB: medical_record_db
+      POSTGRES_USER: oleksandr
+      POSTGRES_PASSWORD: password
+      TZ: Europe/Kyiv
+    ports:
+      - "5434:5432"
+    volumes:
+      - medical-record-db-data:/var/lib/postgresql/data
+
+  appointment-db:
+    image: postgres:15
+    container_name: appointment-db
+    restart: always
+    environment:
+      POSTGRES_DB: appointment_db
+      POSTGRES_USER: oleksandr
+      POSTGRES_PASSWORD: password
+      TZ: Europe/Kyiv
+    ports:
+      - "5435:5432"
+    volumes:
+      - appointment-db-data:/var/lib/postgresql/data
+
+volumes:
+  patient-db-data:
+  doctor-db-data:
+  medical-record-db-data:
+  appointment-db-data:

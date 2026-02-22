@@ -1,0 +1,5 @@
+com\clinicapp\clinicmodule\config\AppointmentDataSourceConfig.class
+com\clinicapp\clinicmodule\ClinicModuleApplication.class
+com\clinicapp\clinicmodule\config\MedicalRecordDataSourceConfig.class
+com\clinicapp\clinicmodule\config\DoctorDataSourceConfig.class
+com\clinicapp\clinicmodule\config\PatientDataSourceConfig.class
