@@ -26,7 +26,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
-    @Transactional
+    @Transactional("medicalRecordTransactionManager")
     public MedicalRecordResponse createMedicalRecord(CreateMedicalRecordRequest medicalRecord) {
         MedicalRecord medicalRecordEntity = medicalRecordMapper.toEntity(medicalRecord);
         return medicalRecordMapper.toDto(medicalRecordRepository.save(medicalRecordEntity));

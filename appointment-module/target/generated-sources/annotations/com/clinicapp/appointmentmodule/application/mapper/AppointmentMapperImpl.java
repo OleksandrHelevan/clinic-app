@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-22T15:17:11+0200",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 24.0.1 (Oracle Corporation)"
+    date = "2026-03-01T12:34:02+0200",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.45.0.v20260224-0835, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
 public class AppointmentMapperImpl implements AppointmentMapper {
@@ -22,6 +22,25 @@ public class AppointmentMapperImpl implements AppointmentMapper {
 
         AppointmentResponse appointmentResponse = new AppointmentResponse();
 
+        if ( appointment.getAppointmentDate() != null ) {
+            appointmentResponse.setAppointmentDate( appointment.getAppointmentDate() );
+        }
+        if ( appointment.getDoctorId() != null ) {
+            appointmentResponse.setDoctorId( appointment.getDoctorId() );
+        }
+        if ( appointment.getId() != null ) {
+            appointmentResponse.setId( appointment.getId() );
+        }
+        if ( appointment.getNotes() != null ) {
+            appointmentResponse.setNotes( appointment.getNotes() );
+        }
+        if ( appointment.getPatientId() != null ) {
+            appointmentResponse.setPatientId( appointment.getPatientId() );
+        }
+        if ( appointment.getStatus() != null ) {
+            appointmentResponse.setStatus( appointment.getStatus() );
+        }
+
         return appointmentResponse;
     }
 
@@ -32,6 +51,22 @@ public class AppointmentMapperImpl implements AppointmentMapper {
         }
 
         Appointment appointment = new Appointment();
+
+        if ( appointmentRequest.getAppointmentDate() != null ) {
+            appointment.setAppointmentDate( appointmentRequest.getAppointmentDate() );
+        }
+        if ( appointmentRequest.getDoctorId() != null ) {
+            appointment.setDoctorId( appointmentRequest.getDoctorId() );
+        }
+        if ( appointmentRequest.getNotes() != null ) {
+            appointment.setNotes( appointmentRequest.getNotes() );
+        }
+        if ( appointmentRequest.getPatientId() != null ) {
+            appointment.setPatientId( appointmentRequest.getPatientId() );
+        }
+        if ( appointmentRequest.getStatus() != null ) {
+            appointment.setStatus( appointmentRequest.getStatus() );
+        }
 
         return appointment;
     }

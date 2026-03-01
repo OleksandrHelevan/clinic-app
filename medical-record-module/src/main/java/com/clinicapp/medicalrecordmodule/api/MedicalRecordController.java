@@ -3,6 +3,7 @@ package com.clinicapp.medicalrecordmodule.api;
 import com.clinicapp.medicalrecordmodule.application.request.CreateMedicalRecordRequest;
 import com.clinicapp.medicalrecordmodule.application.response.MedicalRecordResponse;
 import com.clinicapp.medicalrecordmodule.domain.medicalrecord.MedicalRecordService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/medical-records")
+@RequestMapping("/api/${api.version}/medical-records")
 public class MedicalRecordController {
 
     private final MedicalRecordService medicalRecordService;
@@ -21,7 +22,7 @@ public class MedicalRecordController {
     }
 
     @PostMapping
-    public ResponseEntity<MedicalRecordResponse> createMedicalRecord(@RequestBody CreateMedicalRecordRequest request) {
+    public ResponseEntity<MedicalRecordResponse> createMedicalRecord(@Valid @RequestBody CreateMedicalRecordRequest request) {
         return ResponseEntity.ok(medicalRecordService.createMedicalRecord(request));
     }
 

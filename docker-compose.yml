@@ -4,12 +4,12 @@ services:
     container_name: patient-db
     restart: always
     environment:
-      POSTGRES_DB: patient_db
-      POSTGRES_USER: oleksandr
-      POSTGRES_PASSWORD: password
-      TZ: Europe/Kyiv
+      POSTGRES_DB: ${PATIENT_DB_NAME}
+      POSTGRES_USER: ${POSTGRESQL_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      TZ: ${POSTGRESQL_TZ}
     ports:
-      - "5432:5432"
+      - "${PATIENT_DB_PORT}:${POSTGRESQL_PORT}"
     volumes:
       - patient-db-data:/var/lib/postgresql/data
 
@@ -19,11 +19,11 @@ services:
     restart: always
     environment:
       POSTGRES_DB: doctor_db
-      POSTGRES_USER: oleksandr
-      POSTGRES_PASSWORD: password
-      TZ: Europe/Kyiv
+      POSTGRES_USER: ${POSTGRESQL_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      TZ: ${POSTGRESQL_TZ}
     ports:
-      - "5433:5432"
+      - "${DOCTOR_DB_PORT}:${POSTGRESQL_PORT}"
     volumes:
       - doctor-db-data:/var/lib/postgresql/data
 
@@ -33,11 +33,11 @@ services:
     restart: always
     environment:
       POSTGRES_DB: medical_record_db
-      POSTGRES_USER: oleksandr
-      POSTGRES_PASSWORD: password
-      TZ: Europe/Kyiv
+      POSTGRES_USER: ${POSTGRESQL_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      TZ: ${POSTGRESQL_TZ}
     ports:
-      - "5434:5432"
+      - "${MEDICAL_RECORD_DB_PORT}:${POSTGRESQL_PORT}"
     volumes:
       - medical-record-db-data:/var/lib/postgresql/data
 
@@ -47,11 +47,11 @@ services:
     restart: always
     environment:
       POSTGRES_DB: appointment_db
-      POSTGRES_USER: oleksandr
-      POSTGRES_PASSWORD: password
-      TZ: Europe/Kyiv
+      POSTGRES_USER: ${POSTGRESQL_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      TZ: ${POSTGRESQL_TZ}
     ports:
-      - "5435:5432"
+      - "${APPOINTMENT_DB_PORT}:${POSTGRESQL_PORT}"
     volumes:
       - appointment-db-data:/var/lib/postgresql/data
 

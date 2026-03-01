@@ -26,7 +26,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    @Transactional
+    @Transactional("doctorTransactionManager")
     public DoctorResponse createDoctor(CreateDoctorRequest doctor) {
         Doctor doctorEntity = doctorMapper.toEntity(doctor);
         return doctorMapper.toDto(doctorRepository.save(doctorEntity));

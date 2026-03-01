@@ -27,7 +27,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional
+    @Transactional("patientTransactionManager")
     public PatientResponse createPatient(CreatePatientRequest patient) {
         Patient patientEntity = patientMapper.toEntity(patient);
         return patientMapper.toDto(patientRepository.save(patientEntity));

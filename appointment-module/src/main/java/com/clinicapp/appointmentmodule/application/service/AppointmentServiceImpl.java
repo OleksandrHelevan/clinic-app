@@ -26,7 +26,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    @Transactional
+    @Transactional("appointmentTransactionManager")
     public AppointmentResponse createAppointment(CreateAppointmentRequest appointment) {
         Appointment appointmentEntity = appointmentMapper.toEntity(appointment);
         return appointmentMapper.toDto(appointmentRepository.save(appointmentEntity));

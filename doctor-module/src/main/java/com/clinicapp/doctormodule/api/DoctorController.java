@@ -3,6 +3,7 @@ package com.clinicapp.doctormodule.api;
 import com.clinicapp.doctormodule.application.request.CreateDoctorRequest;
 import com.clinicapp.doctormodule.application.response.DoctorResponse;
 import com.clinicapp.doctormodule.domain.doctor.DoctorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/doctors")
+@RequestMapping("/api/${api.version}/doctors")
 public class DoctorController {
 
     private final DoctorService doctorService;
@@ -21,7 +22,7 @@ public class DoctorController {
     }
 
     @PostMapping
-    public ResponseEntity<DoctorResponse> createDoctor(@RequestBody CreateDoctorRequest request) {
+    public ResponseEntity<DoctorResponse> createDoctor(@Valid @RequestBody CreateDoctorRequest request) {
         return ResponseEntity.ok(doctorService.createDoctor(request));
     }
 

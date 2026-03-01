@@ -3,6 +3,7 @@ package com.clinicapp.appointmentmodule.api;
 import com.clinicapp.appointmentmodule.application.request.CreateAppointmentRequest;
 import com.clinicapp.appointmentmodule.application.response.AppointmentResponse;
 import com.clinicapp.appointmentmodule.domain.appointment.AppointmentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/appointments")
+@RequestMapping("/api/${api.version}/appointments")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
@@ -21,7 +22,7 @@ public class AppointmentController {
     }
 
     @PostMapping
-    public ResponseEntity<AppointmentResponse> createAppointment(@RequestBody CreateAppointmentRequest request) {
+    public ResponseEntity<AppointmentResponse> createAppointment(@Valid @RequestBody CreateAppointmentRequest request) {
         return ResponseEntity.ok(appointmentService.createAppointment(request));
     }
 
