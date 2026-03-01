@@ -1,6 +1,8 @@
 package com.clinicapp.doctormodule.exception;
 
-public class DoctorNotFoundException extends RuntimeException {
+import com.clinicapp.common.exception.EntityNotFoundException;
+
+public class DoctorNotFoundException extends EntityNotFoundException {
     public DoctorNotFoundException(String message) {
         super(message);
     }

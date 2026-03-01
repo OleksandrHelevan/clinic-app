@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>clinic-common</module>
         <module>patient-module</module>
         <module>doctor-module</module>
         <module>medical-record-module</module>
@@ -30,6 +31,11 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.clinicapp</groupId>
+                <artifactId>clinic-common</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.clinicapp</groupId>

@@ -55,6 +55,10 @@
             <version>1.6.3</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.clinicapp</groupId>
+            <artifactId>clinic-common</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

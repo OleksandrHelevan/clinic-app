@@ -5,6 +5,7 @@ import com.clinicapp.doctormodule.application.request.CreateDoctorRequest;
 import com.clinicapp.doctormodule.application.response.DoctorResponse;
 import com.clinicapp.doctormodule.domain.doctor.Doctor;
 import com.clinicapp.doctormodule.domain.doctor.DoctorService;
+import com.clinicapp.doctormodule.exception.DoctorAlreadyExistsException;
 import com.clinicapp.doctormodule.exception.DoctorNotFoundException;
 import com.clinicapp.doctormodule.infrastructure.persistence.DoctorRepository;
 import com.clinicapp.doctormodule.infrastructure.util.ErrorMessage;
@@ -28,6 +29,8 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     @Transactional("doctorTransactionManager")
     public DoctorResponse createDoctor(CreateDoctorRequest doctor) {
+        if(doctorRepository.existsDoctorByEmail(doctor.getEmail()))
+            throw new DoctorAlreadyExistsException(ErrorMessage.DOCTOR_ALREADY_EXISTS);
         Doctor doctorEntity = doctorMapper.toEntity(doctor);
         return doctorMapper.toDto(doctorRepository.save(doctorEntity));
     }

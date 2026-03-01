@@ -12,8 +12,11 @@
 
 	<artifactId>clinic-module</artifactId>
 	<packaging>jar</packaging>
-
 	<dependencies>
+		<dependency>
+			<groupId>com.clinicapp</groupId>
+			<artifactId>clinic-common</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -29,11 +32,13 @@
 		</dependency>
 		<dependency>
 			<groupId>com.clinicapp</groupId>
-			<artifactId>medical-record-module</artifactId>
+			<artifactId>appointment-module</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.clinicapp</groupId>
-			<artifactId>appointment-module</artifactId>
+			<artifactId>medical-record-module</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -46,7 +51,10 @@
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -1,6 +1,8 @@
 package com.clinicapp.appointmentmodule.exception;
 
-public class AppointmentNotFoundException extends RuntimeException {
+import com.clinicapp.common.exception.EntityNotFoundException;
+
+public class AppointmentNotFoundException extends EntityNotFoundException {
     public AppointmentNotFoundException(String message) {
         super(message);
     }

@@ -1,6 +1,8 @@
 package com.clinicapp.medicalrecordmodule.exception;
 
-public class MedicalRecordNotFoundException extends RuntimeException {
+import com.clinicapp.common.exception.EntityNotFoundException;
+
+public class MedicalRecordNotFoundException extends EntityNotFoundException {
     public MedicalRecordNotFoundException(String message) {
         super(message);
     }
