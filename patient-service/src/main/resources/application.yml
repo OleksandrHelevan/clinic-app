@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: plane-service
+  mongodb:
+    uri: ${SPRING_DATA_MONGODB_URI}
+    database: ${SPRING_DATA_MONGODB_NAME}
+
+server:
+  port: ${SERVER_PORT}

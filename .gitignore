@@ -1,8 +1,2 @@
 /.idea/
 /.env
-/patient-module/target/
-/medical-record-module/target/
-/doctor-module/target/
-/appointment-module/target/
-/clinic-module/target/
-/clinic-common/target/

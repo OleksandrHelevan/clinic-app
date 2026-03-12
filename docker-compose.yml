@@ -1,62 +1,16 @@
 services:
-  patient-db:
-    image: postgres:15
-    container_name: patient-db
-    restart: always
-    environment:
-      POSTGRES_DB: ${PATIENT_DB_NAME}
-      POSTGRES_USER: ${POSTGRESQL_USERNAME}
-      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
-      TZ: ${POSTGRESQL_TZ}
+  patient-service:
+    build: ./patient-service
+    container_name: patient-service
     ports:
-      - "${PATIENT_DB_PORT}:${POSTGRESQL_PORT}"
-    volumes:
-      - patient-db-data:/var/lib/postgresql/data
-
-  doctor-db:
-    image: postgres:15
-    container_name: doctor-db
-    restart: always
+      - "${PATIENT_SERVICE_PORT}:${PATIENT_SERVICE_PORT}"
     environment:
-      POSTGRES_DB: doctor_db
-      POSTGRES_USER: ${POSTGRESQL_USERNAME}
-      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
-      TZ: ${POSTGRESQL_TZ}
-    ports:
-      - "${DOCTOR_DB_PORT}:${POSTGRESQL_PORT}"
-    volumes:
-      - doctor-db-data:/var/lib/postgresql/data
-
-  medical-record-db:
-    image: postgres:15
-    container_name: medical-record-db
-    restart: always
-    environment:
-      POSTGRES_DB: medical_record_db
-      POSTGRES_USER: ${POSTGRESQL_USERNAME}
-      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
-      TZ: ${POSTGRESQL_TZ}
-    ports:
-      - "${MEDICAL_RECORD_DB_PORT}:${POSTGRESQL_PORT}"
-    volumes:
-      - medical-record-db-data:/var/lib/postgresql/data
-
-  appointment-db:
-    image: postgres:15
-    container_name: appointment-db
-    restart: always
-    environment:
-      POSTGRES_DB: appointment_db
-      POSTGRES_USER: ${POSTGRESQL_USERNAME}
-      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
-      TZ: ${POSTGRESQL_TZ}
-    ports:
-      - "${APPOINTMENT_DB_PORT}:${POSTGRESQL_PORT}"
-    volumes:
-      - appointment-db-data:/var/lib/postgresql/data
-
+      SERVER_PORT: ${PATIENT_SERVICE_PORT}
+      SPRING_DATA_MONGODB_URI: ${MONGO_PATIENT_URI}
+      SPRING_DATA_MONGODB_NAME: ${PATIENT_DATA_MONGODB_NAME}
 volumes:
   patient-db-data:
-  doctor-db-data:
-  medical-record-db-data:
-  appointment-db-data:
+
+networks:
+  clinic-network:
+    driver: bridge
