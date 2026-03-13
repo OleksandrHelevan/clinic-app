@@ -1,4 +1,12 @@
+version: '3.9'
+
 services:
+  common:
+    build: ./common
+    container_name: common
+    networks:
+      - clinic-network
+
   patient-service:
     build: ./patient-service
     container_name: patient-service
@@ -6,10 +14,26 @@ services:
       - "${PATIENT_SERVICE_PORT}:${PATIENT_SERVICE_PORT}"
     environment:
       SERVER_PORT: ${PATIENT_SERVICE_PORT}
-      SPRING_DATA_MONGODB_URI: ${MONGO_PATIENT_URI}
+      SPRING_DATA_MONGODB_URI: ${MONGO_URI}
       SPRING_DATA_MONGODB_NAME: ${PATIENT_DATA_MONGODB_NAME}
-volumes:
-  patient-db-data:
+    networks:
+      - clinic-network
+    depends_on:
+      - common
+
+  doctor-service:
+    build: ./doctor-service
+    container_name: doctor-service
+    ports:
+      - "${DOCTOR_SERVICE_PORT}:${DOCTOR_SERVICE_PORT}"
+    environment:
+      SERVER_PORT: ${DOCTOR_SERVICE_PORT}
+      SPRING_DATA_MONGODB_URI: ${MONGO_URI}
+      SPRING_DATA_MONGODB_NAME: ${DOCTOR_DATA_MONGODB_NAME}
+    networks:
+      - clinic-network
+    depends_on:
+      - common
 
 networks:
   clinic-network:
