@@ -4,6 +4,7 @@ spring:
   mongodb:
     uri: ${SPRING_DATA_MONGODB_URI}
     database: ${SPRING_DATA_MONGODB_NAME}
-
+    representation:
+      uuid: STANDARD
 server:
   port: ${SERVER_PORT}
