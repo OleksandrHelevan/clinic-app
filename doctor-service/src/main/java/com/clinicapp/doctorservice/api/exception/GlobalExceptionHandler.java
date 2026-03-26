@@ -10,13 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(PatientServiceUnavailableException.class)
-    public ResponseEntity<String> handleUnavailable(PatientServiceUnavailableException e) {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body(e.getMessage());
-    }
-
-    @ExceptionHandler(PatientServiceTimeoutException.class)
-    public ResponseEntity<String> handleTimeout(PatientServiceTimeoutException e) {
+    public ResponseEntity<String> handlePatientUnavailable(PatientServiceUnavailableException e) {
         return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
                 .body(e.getMessage());
     }

@@ -1,7 +1,6 @@
 package com.clinicapp.doctorservice.infrastructure.client.facade;
 
 import com.clinicapp.common.dto.PatientResponse;
-import com.clinicapp.doctorservice.api.exception.PatientServiceTimeoutException;
 import com.clinicapp.doctorservice.api.exception.PatientServiceUnavailableException;
 import com.clinicapp.doctorservice.infrastructure.client.PatientClient;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -29,13 +28,7 @@ public class PatientClientFacade {
     }
 
     private PatientResponse getPatientFallback(UUID id, Throwable t) {
-        log.warn("Fallback triggered for patientId {}: {}", id, t.toString());
-
-        if (t instanceof java.net.http.HttpConnectTimeoutException
-                || (t.getCause() != null && t.getCause() instanceof java.net.http.HttpConnectTimeoutException)) {
-            throw new PatientServiceTimeoutException("Patient service request timed out", t);
-        }
-
-        throw new PatientServiceUnavailableException("Patient service is unavailable", t);
+        log.warn("Fallback triggered for patientId {}: {}", id, t.getMessage());
+        throw new PatientServiceUnavailableException("Patient service unavailable or timeout", t);
     }
 }
