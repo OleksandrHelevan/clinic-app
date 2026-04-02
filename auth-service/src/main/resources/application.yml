@@ -11,3 +11,12 @@ security:
   jwt:
     expiration: ${TOKEN_EXPIRATION}
     secret-key: ${TOKEN_SECRET_KEY}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true

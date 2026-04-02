@@ -6,3 +6,11 @@ spring:
     database: ${SPRING_DATA_MONGODB_NAME}
     representation:
       uuid: STANDARD
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
