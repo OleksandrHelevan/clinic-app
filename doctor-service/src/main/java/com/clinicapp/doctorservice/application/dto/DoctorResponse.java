@@ -1,23 +1,20 @@
 package com.clinicapp.doctorservice.application.dto;
 
 import com.clinicapp.doctorservice.domain.doctor.Specialization;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-import java.util.UUID;
+import java.time.OffsetDateTime;
 
-@Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class DoctorResponse {
-
-    private UUID id;
-    private String firstName;
-    private String lastName;
-    private Specialization specialization;
-    private String email;
-    private String phone;
+public record DoctorResponse(
+        String id,
+        String firstName,
+        String lastName,
+        Specialization specialization,
+        String email,
+        String phone,
+        OffsetDateTime createdAt,
+        OffsetDateTime updatedAt
+) {
 }

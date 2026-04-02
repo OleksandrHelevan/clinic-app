@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DoctorService {
-    DoctorResponse getById(UUID id);
+    DoctorResponse getById(String id);
     DoctorResponse createDoctor(CreateDoctorRequest request);
-    List<DoctorResponse> getDoctorsBySpecialization(Specialization specialization);
+    List<DoctorResponse> getDoctorsBySpecialization(Specialization specialization, int page, int size) ;
     PatientResponse getPatientInfo(UUID patientId);
 
 }

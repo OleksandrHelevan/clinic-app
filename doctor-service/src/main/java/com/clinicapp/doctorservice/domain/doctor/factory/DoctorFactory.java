@@ -11,12 +11,24 @@ public class DoctorFactory {
 
     public Doctor create(CreateDoctorRequest request) {
         return Doctor.builder()
-                .id(UUID.randomUUID())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .id(UUID.randomUUID().toString())
+                .firstName(normalize(request.getFirstName()))
+                .lastName(normalize(request.getLastName()))
                 .specialization(request.getSpecialization())
-                .email(request.getEmail())
-                .phone(request.getPhone())
+                .email(normalizeEmail(request.getEmail()))
+                .phone(normalizePhone(request.getPhone()))
                 .build();
+    }
+
+    private String normalize(String value) {
+        return value != null ? value.trim() : null;
+    }
+
+    private String normalizeEmail(String email) {
+        return email != null ? email.trim().toLowerCase() : null;
+    }
+
+    private String normalizePhone(String phone) {
+        return phone != null ? phone.trim() : null;
     }
 }

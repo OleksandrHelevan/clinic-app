@@ -10,5 +10,4 @@ import org.mapstruct.NullValueCheckStrategy;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 public interface MapperConfig {
-
 }

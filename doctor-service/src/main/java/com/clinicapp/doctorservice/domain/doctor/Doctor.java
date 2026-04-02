@@ -1,17 +1,14 @@
 package com.clinicapp.doctorservice.domain.doctor;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.UUID;
+import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -21,22 +18,29 @@ import java.util.UUID;
 public class Doctor {
 
     @Id
-    private UUID id;
+    private String id;
 
-    @NotBlank(message = "First name is required")
     @Field("first_name")
     private String firstName;
 
-    @NotBlank(message = "Last name is required")
     @Field("last_name")
     private String lastName;
 
+    @Indexed
     private Specialization specialization;
 
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "Email is required")
     @Indexed(unique = true)
     private String email;
 
+    @Indexed
     private String phone;
+
+    @CreatedDate
+    private OffsetDateTime createdAt;
+
+    @LastModifiedDate
+    private OffsetDateTime updatedAt;
+
+    @Builder.Default
+    private boolean deleted = false;
 }
