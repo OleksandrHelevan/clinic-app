@@ -1,6 +1,6 @@
 package com.clinicapp.authservice.infrastructure.messaging;
 
-import com.clinicapp.authservice.domain.OutboxEvent;
+import com.clinicapp.authservice.domain.*;
 import com.clinicapp.authservice.infrastructure.persistence.OutboxEventRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,23 +20,35 @@ public class OutboxRelayService {
 
     @Scheduled(fixedDelay = 5000)
     public void processOutboxEvents() {
-        List<OutboxEvent> pendingEvents = outboxEventRepository.findByStatusOrderByCreatedAtAsc("PENDING");
 
-        if (!pendingEvents.isEmpty()) {
-            log.info("Find {} PENDING events in Outbox. Sending...", pendingEvents.size());
-        }
+        List<OutboxEvent> events =
+                outboxEventRepository.findByStatusOrderByCreatedAtAsc(OutboxStatus.PENDING);
 
-        for (OutboxEvent event : pendingEvents) {
-            try {
-                kafkaTemplate.send("user-registration-topic", event.getAggregateId(), event.getPayload());
-                event.setStatus("SENT");
-                outboxEventRepository.save(event);
+        if (events.isEmpty()) return;
 
-                log.info("Event {} successfully sent and marked as SENT", event.getId());
+        log.info("Found {} PENDING events", events.size());
 
-            } catch (Exception e) {
-                log.error("Error event sending: {}", e.getMessage());
-            }
+        for (OutboxEvent event : events) {
+
+            kafkaTemplate.send(
+                    "user-registration-topic",
+                    event.getAggregateId(),
+                    event.getPayload()
+            ).whenComplete((res, ex) -> {
+
+                if (ex == null) {
+                    event.setStatus(OutboxStatus.SENT);
+                    outboxEventRepository.save(event);
+
+                    log.info("Event {} SENT", event.getId());
+
+                } else {
+                    event.setStatus(OutboxStatus.FAILED);
+                    outboxEventRepository.save(event);
+
+                    log.error("Event {} FAILED: {}", event.getId(), ex.getMessage());
+                }
+            });
         }
     }
 }

@@ -23,4 +23,7 @@ public class User {
 
     @Builder.Default
     private boolean oauthUser = false;
+
+    private RegistrationStatus registrationStatus;
+    private String failureReason;
 }

@@ -75,8 +75,29 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public void createInitialProfile(String id, String email) {
-        Doctor doctor = Doctor.builder().id(id).email(email).build();
-        doctorRepository.save(doctor);
+        log.info("Creating initial doctor profile for userId: {}", id);
+        if (doctorRepository.existsById(id)) {
+            log.info("Doctor profile already exists for userId: {}, skipping", id);
+            return;
+        }
+        try {
+            Doctor doctor = Doctor.builder()
+                    .id(id)
+                    .email(email)
+                    .build();
+            doctorRepository.save(doctor);
+            log.info("Doctor profile created successfully for userId: {}", id);
+        } catch (DuplicateKeyException e) {
+            log.warn("Duplicate detected for userId: {}, treating as success", id);
+        } catch (Exception e) {
+            log.error("Failed to create doctor profile for userId {}: {}", id, e.getMessage());
+            throw new RuntimeException("Doctor profile creation failed", e);
+        }
+    }
+
+    @Override
+    public boolean existsById(String id){
+        return doctorRepository.existsById(id);
     }
 
     public PatientResponse getPatientFallback(String id, Throwable t) {

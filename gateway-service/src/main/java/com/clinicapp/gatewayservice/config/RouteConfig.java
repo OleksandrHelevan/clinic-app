@@ -11,7 +11,7 @@ public class RouteConfig {
     public RouteLocator routes(RouteLocatorBuilder routeLocatorBuilder) {
         return routeLocatorBuilder.routes()
                 .route("auth-service", predicate ->
-                        predicate.path("/api/v1/login", "/api/v1/sign-up")
+                        predicate.path("/api/v1/login", "/api/v1/sign-up", "/api/v1/users/**")
                                 .uri("lb://auth-service")
                 )
                 .route("patient-service", predicate ->

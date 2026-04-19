@@ -10,4 +10,5 @@ public interface PatientService {
     PatientResponse createPatient(CreatePatientRequest request);
     PatientResponse getPatientById(String id);
     void createInitialProfile(String id, String email);
+    boolean existsById(String id);
 }

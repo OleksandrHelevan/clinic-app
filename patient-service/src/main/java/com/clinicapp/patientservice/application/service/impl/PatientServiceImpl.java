@@ -38,4 +38,9 @@ public class PatientServiceImpl implements PatientService {
         Patient patient = Patient.builder().email(email).id(id).build();
         patientRepository.save(patient);
     }
+
+    @Override
+    public boolean existsById(String id){
+        return patientRepository.existsById(id);
+    }
 }

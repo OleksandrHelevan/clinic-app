@@ -1,16 +1,13 @@
 package com.clinicapp.authservice.application.service;
 
-import com.clinicapp.authservice.application.dto.LoginResponse;
-import com.clinicapp.authservice.application.dto.SignUpRequest;
-import com.clinicapp.authservice.application.dto.UserResponse;
-import com.clinicapp.authservice.domain.OutboxEvent;
-import com.clinicapp.authservice.domain.User;
-import com.clinicapp.authservice.infrastructure.persistence.OutboxEventRepository;
-import com.clinicapp.authservice.infrastructure.persistence.UserRepository;
+import com.clinicapp.authservice.application.dto.*;
+import com.clinicapp.authservice.domain.*;
+import com.clinicapp.authservice.infrastructure.persistence.*;
 import com.clinicapp.authservice.infrastructure.security.JwtService;
+import com.clinicapp.common.event.UserRegisteredEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +23,9 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final ObjectMapper objectMapper;
-    @Value("${security.jwt.expiration}")
-    private Long expiration;
 
     public LoginResponse login(String email, String rawPassword) {
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -38,11 +34,18 @@ public class AuthService {
         }
 
         String token = jwtService.generateToken(user);
-        return new LoginResponse(token, user.getId(), user.getRole(), expiration);
+
+        return new LoginResponse(
+                token,
+                user.getId(),
+                user.getRole(),
+                3600L
+        );
     }
 
     @Transactional
     public UserResponse register(SignUpRequest request) {
+
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("User already exists");
         }
@@ -51,30 +54,44 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
-                .enabled(true)
-                .oauthUser(false)
+                .registrationStatus(RegistrationStatus.PROCESSING)
                 .build();
 
         User saved = userRepository.save(user);
+
         try {
-            com.clinicapp.common.event.UserRegisteredEvent event = new com.clinicapp.common.event.UserRegisteredEvent(
-                    saved.getId(), saved.getEmail(), saved.getRole().name()
+            UserRegisteredEvent event = new UserRegisteredEvent(
+                    saved.getId(),
+                    saved.getEmail(),
+                    saved.getRole().name()
             );
 
-            OutboxEvent outboxEvent = OutboxEvent.builder()
+            OutboxEvent outbox = OutboxEvent.builder()
                     .aggregateId(saved.getId())
                     .eventType("UserRegistered")
                     .payload(objectMapper.writeValueAsString(event))
-                    .status("PENDING")
+                    .status(OutboxStatus.PENDING)
                     .createdAt(LocalDateTime.now())
                     .build();
 
-            outboxEventRepository.save(outboxEvent);
+            outboxEventRepository.save(outbox);
 
         } catch (Exception e) {
-            throw new RuntimeException("Помилка серіалізації події", e);
+            throw new RuntimeException("Failed to serialize event", e);
         }
 
         return new UserResponse(saved.getId(), saved.getEmail(), saved.getRole());
+    }
+
+    public UserStatusResponse getStatusOfUser(String id){
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new UserStatusResponse(
+                        user.getId(),
+                        user.getRegistrationStatus(),
+                        user.getFailureReason()
+                );
     }
 }

@@ -14,4 +14,5 @@ public interface DoctorService {
     List<DoctorResponse> getDoctorsBySpecialization(Specialization specialization, int page, int size) ;
     PatientResponse getPatientInfo(UUID patientId);
     void createInitialProfile(String id, String email);
+    boolean existsById(String id);
 }
