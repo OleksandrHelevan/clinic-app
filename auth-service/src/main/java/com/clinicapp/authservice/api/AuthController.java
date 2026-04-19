@@ -1,10 +1,10 @@
 package com.clinicapp.authservice.api;
 
-import com.clinicapp.authservice.application.service.dto.LoginRequest;
-import com.clinicapp.authservice.application.service.dto.LoginResponse;
-import com.clinicapp.authservice.application.service.dto.SignUpRequest;
-import com.clinicapp.authservice.application.service.dto.UserResponse;
-import com.clinicapp.authservice.infrastructure.security.AuthService;
+import com.clinicapp.authservice.application.dto.LoginRequest;
+import com.clinicapp.authservice.application.dto.LoginResponse;
+import com.clinicapp.authservice.application.dto.SignUpRequest;
+import com.clinicapp.authservice.application.dto.UserResponse;
+import com.clinicapp.authservice.application.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -27,11 +27,6 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         LoginResponse response = authService.login(request.getEmail(), request.getPassword());
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/oauth2/success")
-    public ResponseEntity<String> oauth2Success() {
-        return ResponseEntity.ok("OAuth2 login successful!");
     }
 
 }

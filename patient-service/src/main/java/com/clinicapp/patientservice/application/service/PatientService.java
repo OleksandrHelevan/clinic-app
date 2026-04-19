@@ -8,5 +8,6 @@ import java.util.UUID;
 public interface PatientService {
 
     PatientResponse createPatient(CreatePatientRequest request);
-    PatientResponse getPatientById(UUID id);
+    PatientResponse getPatientById(String id);
+    void createInitialProfile(String id, String email);
 }

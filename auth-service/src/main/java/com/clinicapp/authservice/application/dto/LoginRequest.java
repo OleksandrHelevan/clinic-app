@@ -1,17 +1,15 @@
-package com.clinicapp.authservice.application.service.dto;
+package com.clinicapp.authservice.application.dto;
 
-import com.clinicapp.authservice.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpRequest {
+@Getter
+@Setter
+public class LoginRequest {
     private String email;
     private String password;
-    private Role role;
 }

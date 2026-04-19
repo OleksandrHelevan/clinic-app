@@ -13,5 +13,5 @@ public interface DoctorService {
     DoctorResponse createDoctor(CreateDoctorRequest request);
     List<DoctorResponse> getDoctorsBySpecialization(Specialization specialization, int page, int size) ;
     PatientResponse getPatientInfo(UUID patientId);
-
+    void createInitialProfile(String id, String email);
 }

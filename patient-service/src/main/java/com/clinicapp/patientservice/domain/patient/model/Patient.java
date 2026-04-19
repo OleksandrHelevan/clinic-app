@@ -17,12 +17,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Document(collection = "patients")
 public class Patient {
-
     @Id
     private String id;
-
-    @Indexed(unique = true)
-    private String accountId;
 
     private String firstName;
     private String lastName;

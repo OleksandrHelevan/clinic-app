@@ -1,4 +1,4 @@
-package com.clinicapp.authservice.application.service.dto;
+package com.clinicapp.authservice.application.dto;
 
 import com.clinicapp.authservice.domain.Role;
 import lombok.AllArgsConstructor;

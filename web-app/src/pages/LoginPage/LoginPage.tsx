@@ -5,6 +5,7 @@ import {useLogin} from "../../domains/users/useLogin/useLogin.ts";
 import './LoginPage.css'
 import TextInput from "../../components/TextInput/TextInput.tsx";
 import {Link} from "react-router-dom";
+import {Logo} from "../../assets/Logo.tsx";
 
 export default function LoginPage() {
     const {mutate, isPending} = useLogin();
@@ -19,6 +20,7 @@ export default function LoginPage() {
                 onSubmit={onSubmit}
                 title="Вхід в Avyro"
                 subtitle="Авторизуйтесь, щоб продовжити роботу"
+                logo={<Logo/>}
             >
                 {() => (
                     <>

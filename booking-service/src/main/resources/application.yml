@@ -6,6 +6,8 @@ spring:
     database: ${SPRING_DATA_MONGODB_NAME}
     representation:
       uuid: STANDARD
+server:
+  forward-headers-strategy: framework
 eureka:
   client:
     service-url:
@@ -14,3 +16,9 @@ eureka:
     register-with-eureka: true
   instance:
     prefer-ip-address: true
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: true

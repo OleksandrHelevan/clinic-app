@@ -27,9 +27,15 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientResponse getPatientById(UUID id) {
+    public PatientResponse getPatientById(String id) {
         return patientMapper.toDto(patientRepository
                 .findById(id)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found")));
+    }
+
+    @Override
+    public void createInitialProfile(String id, String email) {
+        Patient patient = Patient.builder().email(email).id(id).build();
+        patientRepository.save(patient);
     }
 }

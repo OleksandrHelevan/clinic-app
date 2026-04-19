@@ -13,9 +13,6 @@ import java.time.LocalDate;
 @Setter
 public class CreatePatientRequest {
 
-    @NotBlank(message = "Account ID cannot be empty")
-    private String accountId;
-
     @NotBlank(message = "First name is required")
     private String firstName;
 

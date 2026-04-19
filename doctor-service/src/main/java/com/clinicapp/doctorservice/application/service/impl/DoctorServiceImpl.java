@@ -73,8 +73,15 @@ public class DoctorServiceImpl implements DoctorService {
         return patientClientFacade.getPatientWithRetry(id);
     }
 
+    @Override
+    public void createInitialProfile(String id, String email) {
+        Doctor doctor = Doctor.builder().id(id).email(email).build();
+        doctorRepository.save(doctor);
+    }
+
     public PatientResponse getPatientFallback(String id, Throwable t) {
         log.warn("Patient service unavailable for id {}: {}", id, t.getMessage());
-        return null; // або пустий DTO, як домовилися
+        return null;
     }
+
 }

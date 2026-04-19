@@ -8,6 +8,7 @@ spring:
       uuid: STANDARD
 server:
   port: ${SERVER_PORT}
+  forward-headers-strategy: framework
 
 eureka:
   client:
@@ -50,3 +51,9 @@ logging:
   level:
     io.github.resilience4j: DEBUG
     com.clinicapp: DEBUG
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: true

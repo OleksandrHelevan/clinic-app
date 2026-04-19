@@ -14,6 +14,14 @@ services:
     depends_on:
       discovery-service:
         condition: service_healthy
+      patient-service:
+        condition: service_started
+      doctor-service:
+        condition: service_started
+      booking-service:
+        condition: service_started
+      auth-service:
+        condition: service_started
     networks:
       - clinic-network
 
@@ -111,32 +119,32 @@ services:
       discovery-service:
         condition: service_healthy
 
-#  kafka:
-#    image: confluentinc/cp-kafka:latest
-#    hostname: kafka
-#    container_name: kafka
-#    ports:
-#      - "${KAFKA_HOST_PORT_1}:${KAFKA_HOST_PORT_1}"
-#    environment:
-#      KAFKA_KRAFT_MODE: "true"
-#      KAFKA_PROCESS_ROLES: controller,broker
-#      KAFKA_NODE_ID: 1
-#      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
-#      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
-#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-#      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-#      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-#      KAFKA_LOG_RETENTION_HOURS: 168
-#      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-#      CLUSTER_ID: "nZbZ5s5aT4W4o1eX4OEVRA"
-#      KAFKA_LOG_DIRS: /var/lib/kafka/data
-#    volumes:
-#      - kafka-data:/var/lib/kafka/data
-#    networks:
-#      - clinic-network
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "${KAFKA_HOST_PORT_1}:${KAFKA_HOST_PORT_1}"
+    environment:
+      KAFKA_KRAFT_MODE: "true"
+      KAFKA_PROCESS_ROLES: controller,broker
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      CLUSTER_ID: "nZbZ5s5aT4W4o1eX4OEVRA"
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    networks:
+      - clinic-network
 
 networks:
   clinic-network:

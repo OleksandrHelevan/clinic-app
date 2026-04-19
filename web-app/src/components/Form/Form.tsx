@@ -4,6 +4,7 @@ import {
 } from "react-hook-form";
 import type {ReactNode} from "react";
 import "./Form.css";
+import {Logo} from "../../assets/Logo.tsx";
 
 interface FormProps<T extends FieldValues> {
     children: (methods: UseFormReturn<T>) => ReactNode;
@@ -12,10 +13,11 @@ interface FormProps<T extends FieldValues> {
     subtitle?: string;
     className?: string;
     defaultValues?: DefaultValues<T>;
+    logo?: ReactNode;
 }
 
 export default function Form<T extends FieldValues>(
-    {children, onSubmit, className, defaultValues, title, subtitle}: FormProps<T>) {
+    {children, onSubmit, className, defaultValues, title, subtitle, logo}: FormProps<T>) {
 
     const methods = useForm<T>({
         defaultValues
@@ -26,6 +28,7 @@ export default function Form<T extends FieldValues>(
             <div className="form-card">
                 {(title || subtitle) && (
                     <div className="form-header-area">
+                        {logo && <Logo/>}
                         {title && <h2 className="form-card-title">{title}</h2>}
                         {subtitle && <p className="form-card-subtitle">{subtitle}</p>}
                     </div>
