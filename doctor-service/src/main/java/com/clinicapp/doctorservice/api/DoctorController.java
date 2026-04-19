@@ -20,7 +20,7 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<DoctorResponse> getDoctor(@PathVariable UUID id) {
+    public ResponseEntity<DoctorResponse> getDoctor(@PathVariable String id) {
         return new ResponseEntity<>(doctorService.getById(id), HttpStatus.OK);
     }
 
@@ -30,8 +30,10 @@ public class DoctorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DoctorResponse>> getDoctorsBySpecialization(@RequestParam Specialization specialization) {
-        return new ResponseEntity<>(doctorService.getDoctorsBySpecialization(specialization), HttpStatus.OK);
+    public ResponseEntity<List<DoctorResponse>> getDoctorsBySpecialization(@RequestParam Specialization specialization,
+                                                                           @RequestParam int page,
+                                                                           @RequestParam int size) {
+        return new ResponseEntity<>(doctorService.getDoctorsBySpecialization(specialization, page, size), HttpStatus.OK);
     }
 
     @GetMapping("/patients/{id}")

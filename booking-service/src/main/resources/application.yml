@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: booking-service
+  mongodb:
+    uri: ${SPRING_DATA_MONGODB_URI}
+    database: ${SPRING_DATA_MONGODB_NAME}
+    representation:
+      uuid: STANDARD
+server:
+  forward-headers-strategy: framework
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: true

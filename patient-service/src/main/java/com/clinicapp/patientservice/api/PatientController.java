@@ -22,7 +22,7 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PatientResponse> getPatient(@PathVariable UUID id) {
+    public ResponseEntity<PatientResponse> getPatient(@PathVariable String id) {
         return new ResponseEntity<>(patientService.getPatientById(id), HttpStatus.OK);
     }
 }

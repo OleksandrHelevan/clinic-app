@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;300;400;500;700;800;900&display=swap');
+:root {
+  --bg-color: #f8fafc;
+  --surface: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-bg: #eff6ff;
+  --accent-border: #bfdbfe;
+  --border: #e2e8f0;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --social-bg: #ffffff;
+  --text-h: #1e293b;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  margin: 0;
+  font-family: 'M PLUS 1p', sans-serif;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+

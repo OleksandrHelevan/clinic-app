@@ -15,6 +15,11 @@
         <module>common</module>
         <module>doctor-service</module>
         <module>patient-service</module>
+        <module>auth-service</module>
+        <module>booking-service</module>
+        <module>discovery-service</module>
+        <module>gateway-service</module>
+        <module>security-lib</module>
     </modules>
 
     <properties>

@@ -5,7 +5,6 @@ import com.clinicapp.patientservice.application.dto.CreatePatientRequest;
 import com.clinicapp.common.dto.PatientResponse;
 import com.clinicapp.patientservice.application.mapper.PatientMapper;
 import com.clinicapp.patientservice.application.service.PatientService;
-import com.clinicapp.patientservice.domain.patient.factory.PatientFactory;
 import com.clinicapp.patientservice.domain.patient.model.Patient;
 import com.clinicapp.patientservice.infrastructure.persistence.PatientRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,24 +18,29 @@ import java.util.UUID;
 public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
-    private final PatientFactory patientFactory;
 
     @Override
     @Transactional
     public PatientResponse createPatient(CreatePatientRequest request) {
-        Patient patient = patientFactory
-                .create(request.getFirstName(),
-                        request.getLastName(),
-                        request.getDateOfBirth(),
-                        request.getEmail(),
-                        request.getPhoneNumber());
+        Patient patient = patientMapper.toEntity(request);
         return patientMapper.toDto(patientRepository.save(patient));
     }
 
     @Override
-    public PatientResponse getPatientById(UUID id) {
+    public PatientResponse getPatientById(String id) {
         return patientMapper.toDto(patientRepository
                 .findById(id)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found")));
+    }
+
+    @Override
+    public void createInitialProfile(String id, String email) {
+        Patient patient = Patient.builder().email(email).id(id).build();
+        patientRepository.save(patient);
+    }
+
+    @Override
+    public boolean existsById(String id){
+        return patientRepository.existsById(id);
     }
 }
