@@ -4,13 +4,15 @@ import com.clinicapp.authservice.application.dto.*;
 import com.clinicapp.authservice.domain.*;
 import com.clinicapp.authservice.infrastructure.persistence.*;
 import com.clinicapp.authservice.infrastructure.security.JwtService;
+import com.clinicapp.common.dto.MeContextResponse;
 import com.clinicapp.common.event.UserRegisteredEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
@@ -83,15 +85,26 @@ public class AuthService {
         return new UserResponse(saved.getId(), saved.getEmail(), saved.getRole());
     }
 
-    public UserStatusResponse getStatusOfUser(String id){
+    public UserStatusResponse getStatusOfUser(String id) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return new UserStatusResponse(
-                        user.getId(),
-                        user.getRegistrationStatus(),
-                        user.getFailureReason()
-                );
+                user.getId(),
+                user.getRegistrationStatus(),
+                user.getFailureReason()
+        );
+    }
+
+    public MeContextResponse getMeContext(String userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid gateway token"));
+
+        return new MeContextResponse(
+                user.getId(),
+                user.getRole().name()
+        );
     }
 }

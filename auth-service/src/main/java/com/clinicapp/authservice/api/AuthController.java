@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.clinicapp.common.dto.MeContextResponse;
 
 import jakarta.validation.Valid;
 
@@ -39,6 +40,14 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(authService.getStatusOfUser(id));
+    }
+
+    @GetMapping("/internal/me-context")
+    public MeContextResponse getMeContext(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-Gateway-Token") String token
+    ) {
+        return authService.getMeContext(userId);
     }
 
 }

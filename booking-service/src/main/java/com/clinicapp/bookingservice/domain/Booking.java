@@ -25,11 +25,11 @@ import java.util.UUID;
 public class Booking {
 
     @Id
-    private UUID id;
+    private String id;
     @Indexed
-    private UUID doctorId;
+    private String doctorId;
     @Indexed
-    private UUID patientId;
+    private String patientId;
     @Indexed
     private OffsetDateTime bookedTime;
 

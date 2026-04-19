@@ -24,9 +24,10 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
-    # Цей параметр змушує Swagger UI використовувати відносні посилання
     config-url: /v3/api-docs/swagger-config
     urls:
+      - name: Gateway Service
+        url: /v3/api-docs
       - name: Auth Service
         url: /auth-docs/v3/api-docs
       - name: Patient Service

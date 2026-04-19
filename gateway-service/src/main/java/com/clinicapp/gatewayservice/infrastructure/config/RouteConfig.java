@@ -1,4 +1,4 @@
-package com.clinicapp.gatewayservice.config;
+package com.clinicapp.gatewayservice.infrastructure.config;
 
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -11,7 +11,7 @@ public class RouteConfig {
     public RouteLocator routes(RouteLocatorBuilder routeLocatorBuilder) {
         return routeLocatorBuilder.routes()
                 .route("auth-service", predicate ->
-                        predicate.path("/api/v1/login", "/api/v1/sign-up", "/api/v1/users/**")
+                        predicate.path("/api/v1/login", "/api/v1/sign-up", "/api/v1/users/**", "/api/v1/internal/me-context")
                                 .uri("lb://auth-service")
                 )
                 .route("patient-service", predicate ->
