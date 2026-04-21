@@ -1,22 +1,27 @@
 spring:
   application:
-    name: booking-service
+    name: chat-service
+
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST}
+      port: ${SPRING_DATA_REDIS_PORT}
+
   mongodb:
     uri: ${SPRING_DATA_MONGODB_URI}
     database: ${SPRING_DATA_MONGODB_NAME}
+
 server:
-  forward-headers-strategy: framework
+  port: ${SERVER_PORT:8085}
+
 eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
-    fetch-registry: true
-    register-with-eureka: true
   instance:
     prefer-ip-address: true
 
-springdoc:
-  swagger-ui:
-    enabled: false
-  api-docs:
-    enabled: true
+logging:
+  level:
+    org.springframework.web.socket: DEBUG
+    org.springframework.messaging: DEBUG
