@@ -4,11 +4,14 @@ import Form from "../../components/Form/Form.tsx";
 import Input from "../../components/TextInput/TextInput.tsx";
 import Button from "../../components/Button/Button.tsx";
 import './SignUpPage.css';
+import {useSignUp} from "../../domains/users/useSignUp/useSignUp.ts";
 
 export default function SignUpPage() {
+    const {mutate} = useSignUp()
 
     const onSubmit = (data: SignUpRequest) => {
-        console.log("Registration data:", data);
+        console.log(data)
+        mutate(data)
     };
     return (
         <div className="wrapper">

@@ -35,6 +35,9 @@ public class Doctor {
     @Indexed
     private String phone;
 
+    @Field("avatar_url")
+    private String avatarUrl;
+
     @CreatedDate
     private OffsetDateTime createdAt;
 

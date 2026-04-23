@@ -28,3 +28,12 @@ export interface UserResponse{
     email: string;
     role: Role;
 }
+
+export interface MeResponse {
+    userId: string;
+    role: Role;
+    profile: {
+        email: string;
+        id: string;
+    }
+}

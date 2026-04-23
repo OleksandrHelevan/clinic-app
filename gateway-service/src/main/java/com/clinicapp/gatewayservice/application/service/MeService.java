@@ -27,7 +27,6 @@ public class MeService {
                 .header("X-Gateway-Token", "gateway-service-token")
                 .retrieve()
                 .bodyToMono(MeContextResponse.class);
-        // auth-service НЕ має fallback — без контексту нема змісту продовжувати
 
         return contextMono.flatMap(ctx -> {
 

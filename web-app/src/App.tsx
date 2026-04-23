@@ -6,6 +6,7 @@ import RootLayout from "./layouts/RootLayout/RootLayout.tsx";
 import {QueryClientProvider} from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import {queryClient} from "./service/queryClient.ts";
+import ProfilePage from "./pages/ProfilePage/ProfilePage.tsx";
 
 export default function App() {
     return (
@@ -13,10 +14,11 @@ export default function App() {
             <Toaster position="bottom-right" />
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<RootLayout />}>
+                    <Route element={<RootLayout />}>
                         <Route index element={<HomePage />} />
-                        <Route path="login" element={<LoginPage />} />
-                        <Route path="sign-up" element={<SignUpPage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/sign-up" element={<SignUpPage />} />
+                        <Route path="/me" element={<ProfilePage/>}/>
                     </Route>
                     <Route path="*" element={<div>Сторінку не знайдено (404)</div>} />
                 </Routes>

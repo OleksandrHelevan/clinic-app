@@ -1,4 +1,4 @@
-import type {LoginRequest, LoginResponse, SignUpRequest, UserResponse} from "../types.ts";
+import type {LoginRequest, LoginResponse, MeResponse, SignUpRequest, UserResponse} from "../types.ts";
 import {apiClient} from "../../../service/apiClient.ts";
 
 export const userApiClient = {
@@ -7,4 +7,7 @@ export const userApiClient = {
 
     signUp: (request: SignUpRequest): Promise<UserResponse> =>
         apiClient.post<UserResponse>('/sign-up', request),
+
+    me: (headers: Record<string, string>): Promise<MeResponse> =>
+        apiClient.get<MeResponse>('/me', headers),
 }

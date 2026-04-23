@@ -7,15 +7,37 @@ interface RequestOptions {
     body?: unknown;
 }
 
+const PUBLIC_ENDPOINTS = [
+    '/login',
+    '/sign-up',
+    '/me'
+];
+
+const isPublicEndpoint = (endpoint: string): boolean => {
+    return PUBLIC_ENDPOINTS.some(publicPath => endpoint.includes(publicPath));
+};
+
 async function request<T>(endpoint: string, method: string, options: RequestOptions = {}): Promise<T> {
     const url = `${BASE_URL}${endpoint}`;
 
+    const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...options.headers,
+    };
+
+    if (!isPublicEndpoint(endpoint)) {
+        const token = localStorage.getItem('accessToken');
+
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        } else {
+            console.warn(`[apiClient] Спроба зробити запит на ${endpoint} без токена`);
+        }
+    }
+
     const config: RequestInit = {
         method,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers,
-        },
+        headers,
     };
 
     if (options.body !== undefined) {
@@ -25,6 +47,10 @@ async function request<T>(endpoint: string, method: string, options: RequestOpti
     const response = await fetch(url, config);
 
     if (!response.ok) {
+       if (response.status === 401) {
+            console.error("Токен недійсний або прострочений");
+        }
+
         const errorData = (await response.json().catch(() => ({}))) as { message?: string };
         throw new Error(errorData.message || `HTTP Error: ${response.status}`);
     }

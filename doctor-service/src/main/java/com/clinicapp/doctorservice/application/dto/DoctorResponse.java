@@ -12,6 +12,7 @@ public record DoctorResponse(
         String firstName,
         String lastName,
         Specialization specialization,
+        String avatarUrl,
         String email,
         String phone,
         OffsetDateTime createdAt,

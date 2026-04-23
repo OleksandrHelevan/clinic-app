@@ -20,7 +20,7 @@ public class RouteConfig {
                 )
                 .route("doctor-service", predicate ->
                         predicate.path("/api/v1/doctors/**")
-                                .uri("lb://doctors-service")
+                                .uri("lb://doctor-service")
                 )
                 .route("booking-service", predicate ->
                         predicate.path("/api/v1/bookings/**")
