@@ -1,4 +1,4 @@
-package com.clinicapp.chatservice.application;
+package com.clinicapp.chatservice.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;

@@ -1,4 +1,4 @@
-package com.clinicapp.chatservice.domains;
+package com.clinicapp.chatservice.domains.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

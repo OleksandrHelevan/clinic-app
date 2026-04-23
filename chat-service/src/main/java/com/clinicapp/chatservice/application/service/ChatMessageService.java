@@ -1,8 +1,8 @@
-package com.clinicapp.chatservice.application;
+package com.clinicapp.chatservice.application.service;
 
-import com.clinicapp.chatservice.domains.ChatBucket;
-import com.clinicapp.chatservice.domains.ChatMessage;
-import com.clinicapp.chatservice.domains.MessageStatus;
+import com.clinicapp.chatservice.domains.bucket.ChatBucket;
+import com.clinicapp.chatservice.domains.message.ChatMessage;
+import com.clinicapp.chatservice.domains.message.MessageStatus;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
