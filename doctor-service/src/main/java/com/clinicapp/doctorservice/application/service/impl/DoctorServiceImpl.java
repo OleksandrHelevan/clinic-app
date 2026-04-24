@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -52,7 +52,7 @@ public class DoctorServiceImpl implements DoctorService {
         try {
             Doctor doctor = Doctor.builder()
                     .id(id)
-                    .createdAt(OffsetDateTime.now())
+                    .createdAt(Instant.now())
                     .email(email)
                     .build();
             doctorRepository.save(doctor);
@@ -75,7 +75,7 @@ public class DoctorServiceImpl implements DoctorService {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Doctor with id " + id + " not found"));
         doctorMapper.updateDoctorFromDto(request, doctor);
-        doctor.setUpdatedAt(OffsetDateTime.now());
+        doctor.setUpdatedAt(Instant.now());
         return doctorMapper.toDto(doctorRepository.save(doctor));
     }
 

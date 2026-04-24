@@ -4,6 +4,9 @@ spring:
   mongodb:
     uri: ${SPRING_DATA_MONGODB_URI}
     database: ${SPRING_DATA_MONGODB_NAME}
+  data:
+    mongodb:
+      auto-index-creation: true
 server:
   port: ${SERVER_PORT}
   forward-headers-strategy: framework
@@ -22,3 +25,9 @@ springdoc:
     enabled: false
   api-docs:
     enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus, metrics

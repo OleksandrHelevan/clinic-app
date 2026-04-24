@@ -4,6 +4,7 @@ import com.clinicapp.doctorservice.domain.doctor.Specialization;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 
 @Builder
@@ -15,7 +16,7 @@ public record DoctorResponse(
         String avatarUrl,
         String email,
         String phone,
-        OffsetDateTime createdAt,
-        OffsetDateTime updatedAt
+        Instant createdAt,
+        Instant updatedAt
 ) {
 }

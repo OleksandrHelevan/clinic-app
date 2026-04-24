@@ -2,6 +2,10 @@ server:
   port: ${SERVER_PORT}
 
 spring:
+  data:
+    redis:
+      host: redis
+      port: 6379
   application:
     name: gateway-service
   cloud:
@@ -36,3 +40,22 @@ springdoc:
         url: /doctor-docs/v3/api-docs
       - name: Booking Service
         url: /booking-docs/v3/api-docs
+security:
+  jwt:
+    secret-key: ${TOKEN_SECRET_KEY}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus, metrics
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}

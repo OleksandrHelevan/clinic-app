@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 
 @Data
@@ -39,10 +40,10 @@ public class Doctor {
     private String avatarUrl;
 
     @CreatedDate
-    private OffsetDateTime createdAt;
+    private Instant createdAt;
 
     @LastModifiedDate
-    private OffsetDateTime updatedAt;
+    private Instant updatedAt;
 
     @Builder.Default
     private boolean deleted = false;

@@ -2,6 +2,10 @@ FROM maven:3.9.9-eclipse-temurin-21-alpine AS builder
 
 WORKDIR /app
 
+COPY security-lib/pom.xml ./security-lib/pom.xml
+COPY security-lib/src ./security-lib/src
+RUN --mount=type=cache,target=/root/.m2 mvn -f security-lib/pom.xml install -DskipTests
+
 COPY gateway-service/pom.xml ./gateway-service/pom.xml
 RUN --mount=type=cache,target=/root/.m2 mvn -f gateway-service/pom.xml dependency:go-offline
 

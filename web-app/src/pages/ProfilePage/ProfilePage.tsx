@@ -1,10 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { useMe } from "../../domains/users/useMe/useMe.ts";
 import Button from "../../components/Button/Button.tsx";
+import { useState } from "react";
+import { useChat } from "../../hooks/useChat/useChat.ts";
+import { Chat } from "../../components/Chat/Chat.tsx";
+import type {DoctorResponse} from "../../domains/doctors/types.ts";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
     const { data: user, isLoading, isError } = useMe();
+
+    const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
+
+    const { messages, connected } = useChat(user?.profile?.id || "");
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -21,66 +29,90 @@ export default function ProfilePage() {
         }
     };
 
-    if (isLoading) {
-        return (
-            <div className="wrapper profile-centered">
-            <div className="loader">Завантаження профілю...</div>
-        </div>
-    );
-    }
+    if (isLoading) return <div className="wrapper profile-centered">Завантаження...</div>;
 
-    // Стан 2: Помилка або користувач не знайдений (не авторизований)
     if (isError || !user) {
         return (
             <div className="wrapper profile-centered">
-            <div className="profile-error-card">
-                <h2>Помилка доступу</h2>
-        <p>Схоже, ви не авторизовані або час сесії минув.</p>
-        <Button variant="primary" onClick={() => navigate("/login")}>
-        Перейти до входу
-        </Button>
-        </div>
-        </div>
-    );
+                <div className="profile-error-card">
+                    <h2>Помилка доступу</h2>
+                    <Button variant="primary" onClick={() => navigate("/login")}>Вхід</Button>
+                </div>
+            </div>
+        );
     }
 
-    // Стан 3: Успішне відображення профілю
+    const chatPartners = Array.from(new Set(messages.map(m => m.senderId === user.profile.id ? m.recipientId : m.senderId)));
+
     return (
         <div className="wrapper">
-        <div className="profile-container">
-        <div className="profile-header">
-        <h1 className="profile-title">Особистий кабінет</h1>
-    <p className="profile-subtitle">Платформа Avyro</p>
-    </div>
+            <div className="profile-container">
+                <div className="profile-card">
+                    <div className="profile-avatar">
+                        {user.profile.email.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="profile-info-list">
+                        <div className="profile-info-item">
+                            <span className="info-label">Email</span>
+                            <span className="info-value">{user.profile.email}</span>
+                        </div>
+                        <div className="profile-info-item">
+                            <span className="info-label">Роль</span>
+                            <span className="info-value badge">{getRoleLabel(user.role)}</span>
+                        </div>
+                    </div>
+                </div>
 
-    <div className="profile-card">
-    <div className="profile-avatar">
-        {/* Беремо першу літеру email для аватарки */}
-    {user.profile.email.charAt(0).toUpperCase()}
-    </div>
+                {user.role === "DOCTOR" && (
+                    <div className="messages-section" style={{ marginTop: '20px' }}>
+                        <h3>📥 Вхідні повідомлення {connected ? '🟢' : '🔴'}</h3>
+                        <div className="inbox-list" style={inboxContainerStyle}>
+                            {chatPartners.length === 0 ? (
+                                <p style={{ color: '#888' }}>Повідомлень поки немає</p>
+                            ) : (
+                                chatPartners.map(partnerId => (
+                                    <div
+                                        key={partnerId}
+                                        onClick={() => setSelectedPatientId(partnerId)}
+                                        style={inboxItemStyle}
+                                    >
+                                        <strong>Пацієнт ID: {partnerId.slice(0, 8)}...</strong>
+                                        <p style={{ fontSize: '0.8rem', margin: 0 }}>Натисніть, щоб відповісти</p>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                )}
 
-    <div className="profile-info-list">
-    <div className="profile-info-item">
-    <span className="info-label">Email</span>
-        <span className="info-value">{user.profile.email}</span>
-        </div>
-        <div className="profile-info-item">
-    <span className="info-label">Роль</span>
-        <span className="info-value badge">{getRoleLabel(user.role)}</span>
-    </div>
-    <div className="profile-info-item">
-    <span className="info-label">ID Користувача</span>
-    <span className="info-value text-muted">{user.profile.id}</span>
-        </div>
-        </div>
-        </div>
+                <div className="profile-actions" style={{ marginTop: '20px' }}>
+                    <Button variant="outline" onClick={handleLogout} className="w-full">
+                        Вийти з акаунту
+                    </Button>
+                </div>
+            </div>
 
-        <div className="profile-actions">
-    <Button variant="outline" onClick={handleLogout} className="w-full">
-        Вийти з акаунту
-    </Button>
-    </div>
-    </div>
-    </div>
-);
+            {selectedPatientId && (
+                <Chat
+                    currentUserId={user.profile.id}
+                    onClose={() => setSelectedPatientId(null)}
+                    doctor={{ id: selectedPatientId, firstName: "Пацієнт", lastName: "" } as DoctorResponse}
+                />
+            )}
+        </div>
+    );
 }
+
+const inboxContainerStyle: React.CSSProperties = {
+    background: '#f9f9f9',
+    borderRadius: '8px',
+    padding: '10px',
+    border: '1px solid #eee'
+};
+
+const inboxItemStyle: React.CSSProperties = {
+    padding: '10px',
+    borderBottom: '1px solid #ddd',
+    cursor: 'pointer',
+    transition: 'background 0.2s'
+};

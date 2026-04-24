@@ -7,6 +7,9 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] })
   ],
+  define: {
+    global: 'window',
+  },
   server: {
     port: 3000,
     proxy: {
