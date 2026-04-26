@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: 'f4a62d04b7f61a9f169b59da8cae2d1eb5bfd19b47ffda3f380feaa41147383d6c864bf4b5c35f615e977fd8dcfaf92ba68df159fb9d2ebdcd1ae440c7dea4d049759f39f7f35ebd4d3c9c17ddb2eaddbc91e66cbce2ce74e8ceceac8c5f8ed183c55b8dcd376c211dca49f5531b5f41861d6ccb291b00033578ce525e0d02e9d5c834e3b2d8e6b17d710e7fc9b7807f203dbe0d032ebcdd686a425ad45c40718c84d7f618ccae611eb89f333695d679855de9e9842a8d51983b5a063b656e6098a843a55386b7f0ceb68d43adca6eb7d31ac9ad86c09d5788b207c9b25b2581fb63f01a88ba1c79e4e13d427fb090e6fed7046972986d5d96a0c95f4b1e067d4437c0acd4acdaa7a90c2ca8ab91fb5a'
+      database: chat_db_dev
+
+server:
+  port: 8085
+
+logging:
+  level:
+    com.clinicapp: DEBUG

@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+security:
+  jwt:
+    secret-key: dev-secret-key-not-secure-only-for-local
+
+app:
+  rate-limit:
+    requests-per-second: 1000
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    com.clinicapp: DEBUG

@@ -1,0 +1,26 @@
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus, metrics, refresh, env
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: true
+
+app:
+  http-timeout-ms: 5000
+  feature-flags:
+    notifications-enabled: true

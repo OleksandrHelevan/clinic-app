@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: gateway-service
+  data:
+    redis:
+      host: redis
+      port: 6379
+  cloud:
+    loadbalancer:
+      cache:
+        enabled: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/
+    registry-fetch-interval-seconds: 5
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: Gateway Service
+        url: /v3/api-docs
+      - name: Auth Service
+        url: /auth-docs/v3/api-docs
+      - name: Patient Service
+        url: /patient-docs/v3/api-docs
+      - name: Doctor Service
+        url: /doctor-docs/v3/api-docs
+      - name: Booking Service
+        url: /booking-docs/v3/api-docs
+
+security:
+  jwt:
+    secret-key: '87874be75cf3f44a75fac959d65be8d9955b22b90f60d36c4e64b3d85074185263b7778e369105e38068a20652b5c2d830861b05720bbba62ade887d349082bdec33d847095d756f47c441e217a7969b10b7d0288c3a2d84e840115b892cf893'
+
+management:
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}

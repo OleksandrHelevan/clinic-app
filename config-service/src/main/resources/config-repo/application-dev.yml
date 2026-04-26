@@ -1,0 +1,12 @@
+logging:
+  level:
+    root: DEBUG
+    com.clinicapp: DEBUG
+    org.springframework.web: DEBUG
+
+app:
+  http-timeout-ms: 10000
+  environment: development
+  feature-flags:
+    notifications-enabled: false
+    debug-mode: true

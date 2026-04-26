@@ -20,7 +20,7 @@ public class RouteConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder routeLocatorBuilder) {
         return routeLocatorBuilder.routes()
-                .route("auth-service-public", r -> r.path("/api/v1/login", "/api/v1/sign-up")
+                .route("auth-service-public", r -> r.path("/api/v1/login", "/api/v1/sign-up", "/config")
                         .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(loginRateLimiter())))
                         .uri("lb://auth-service"))
 

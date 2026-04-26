@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: patient-service
+  data:
+    mongodb:
+      auto-index-creation: true
+
+server:
+  forward-headers-strategy: framework
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/
+
+app:
+  pagination:
+    default-page-size: 20
+    max-page-size: 100

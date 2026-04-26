@@ -5,24 +5,4 @@ spring:
     uri: ${SPRING_DATA_MONGODB_URI}
     database: ${SPRING_DATA_MONGODB_NAME}
 server:
-  forward-headers-strategy: framework
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
-    fetch-registry: true
-    register-with-eureka: true
-  instance:
-    prefer-ip-address: true
-
-springdoc:
-  swagger-ui:
-    enabled: false
-  api-docs:
-    enabled: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, prometheus, metrics
+  port: ${SERVER_PORT:8084}

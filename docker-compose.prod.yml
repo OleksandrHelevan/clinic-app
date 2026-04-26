@@ -1,0 +1,31 @@
+services:
+
+  auth-service:
+    image: your-registry/auth-service:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    restart: always
+
+  patient-service:
+    image: your-registry/patient-service:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    restart: always
+
+  doctor-service:
+    image: your-registry/doctor-service:latest
+    restart: always
+
+  booking-service:
+    image: your-registry/booking-service:latest
+    restart: always
+
+  chat-service:
+    image: your-registry/chat-service:latest
+    restart: always
+
+  gateway-service:
+    image: your-registry/gateway-service:latest
+    ports:
+      - "80:8080"
+    restart: always
