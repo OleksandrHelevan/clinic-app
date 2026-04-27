@@ -1,28 +1,42 @@
 :root {
-    --primary-grad: linear-gradient(135deg, #2563eb 0%, #a17ee2 100%);
+    --primary-grad: linear-gradient(135deg, #5c52d4 0%, #4a42b1 100%);
+    --bg-main: ;
+    --bg-surface: #ffffff;
+    --bg-surface-hover: #f3f4f6;
+    --text-heading: #111827;
+    --text-body: #374151;
+    --text-muted: #6b7280;
+    --text-inverse: #ffffff;
+    --border-subtle: #e5e7eb;
+    --border-base: #d1d5db;
+    --border-strong: #9ca3af;
+    --danger-color: #ef4444;
+    --danger-bg: #fef2f2;
+    --danger-border: #fecaca;
 }
 
-.footer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.header {
     width: 100%;
-    position: absolute;
-    bottom: 0;
 }
 
-.header{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0;
-}
-.wrapper{
-
-}
-.main-container{
+.main-container {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    width: 100%;
+}
+
+.footer {
+    display: flex;
     justify-content: center;
+    align-items: center;
+    padding: 24px 0;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.5);
 }

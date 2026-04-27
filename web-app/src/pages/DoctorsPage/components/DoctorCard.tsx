@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { DoctorResponse } from "../../../domains/doctors/types.ts";
+import './DoctorCard.css';
+import { DefaultAvatar } from "../../../assets/DefaultAvatar.tsx";
 
 interface DoctorCardProps {
     doctor: DoctorResponse;
@@ -7,47 +9,39 @@ interface DoctorCardProps {
 }
 
 export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, onWriteMessage }) => {
+    const [imageError, setImageError] = useState(false);
+
     return (
-        <div style={cardStyle}>
-            <img
-                src={doctor.avatarUrl || 'https://via.placeholder.com/100'}
-                alt={doctor.lastName || 'Doctor'}
-                style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover' }}
-            />
-            <div style={{ flex: 1 }}>
-                <h3 style={{ margin: '0 0 8px 0' }}>
+        <div className="doctor-card">
+            {doctor.avatarUrl && !imageError ? (
+                <img
+                    className="doctor-avatar"
+                    src={doctor.avatarUrl}
+                    alt={`${doctor.firstName} ${doctor.lastName}`}
+                    onError={() => setImageError(true)}
+                />
+            ) : (
+                <DefaultAvatar className="doctor-avatar" />
+            )}
+
+            <div className="doctor-info">
+                <h3 className="doctor-name">
                     {doctor.firstName} {doctor.lastName}
                 </h3>
-                <p style={{ color: '#666', fontWeight: 'bold', margin: '4px 0' }}>{doctor.specialization}</p>
-                <p style={{ fontSize: '0.85rem', margin: '2px 0' }}>{doctor.email}</p>
-                <p style={{ fontSize: '0.85rem', margin: '2px 0' }}>{doctor.phone}</p>
+                <p className="doctor-specialty">{doctor.specialization}</p>
+
+                <div className="doctor-contacts">
+                    <p>{doctor.email}</p>
+                    <p>{doctor.phone}</p>
+                </div>
 
                 <button
+                    className="btn-write"
                     onClick={() => onWriteMessage(doctor)}
-                    style={writeButtonStyle}
                 >
-                    Написати
+                    Message
                 </button>
             </div>
         </div>
     );
-};
-
-const cardStyle: React.CSSProperties = {
-    border: '1px solid #ddd',
-    padding: '16px',
-    borderRadius: '8px',
-    display: 'flex',
-    gap: '15px',
-    backgroundColor: '#fff'
-};
-
-const writeButtonStyle: React.CSSProperties = {
-    marginTop: '10px',
-    padding: '6px 12px',
-    backgroundColor: '#28a745',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer'
 };

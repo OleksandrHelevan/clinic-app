@@ -1,4 +1,4 @@
-package com.clinicapp.gatewayservice.infrastructure;
+package com.clinicapp.gatewayservice.infrastructure.security;
 
 import org.jspecify.annotations.NullMarked;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;

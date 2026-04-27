@@ -10,7 +10,6 @@ interface RequestOptions {
 const PUBLIC_ENDPOINTS = [
     '/login',
     '/sign-up',
-    '/me'
 ];
 
 const isPublicEndpoint = (endpoint: string): boolean => {
@@ -26,7 +25,7 @@ async function request<T>(endpoint: string, method: string, options: RequestOpti
     };
 
     if (!isPublicEndpoint(endpoint)) {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem('token');
 
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;

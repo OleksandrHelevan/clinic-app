@@ -1,15 +1,17 @@
-import {Outlet} from 'react-router-dom'
-import './RootLayout.css'
+import { Outlet } from "react-router-dom";
+import "./RootLayout.css";
+import { NavBar } from "../../components/NavBar/NavBar.tsx";
 
 export default function RootLayout() {
     return (
-        <div className="wrapper">
-        <header className="header">
+        <>
+            <header className="header">
+                <NavBar isAuthenticated={true} />
+            </header>
 
-        </header>
             <main className="main-container">
-                <Outlet/>
+                <Outlet />
             </main>
-        </div>
-    )
+        </>
+    );
 }

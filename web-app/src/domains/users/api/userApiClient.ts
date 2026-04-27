@@ -8,6 +8,5 @@ export const userApiClient = {
     signUp: (request: SignUpRequest): Promise<UserResponse> =>
         apiClient.post<UserResponse>('/sign-up', request),
 
-    me: (headers: Record<string, string>): Promise<MeResponse> =>
-        apiClient.get<MeResponse>('/me', headers),
+    me: (): Promise<MeResponse> => apiClient.get<MeResponse>('/me'),
 }

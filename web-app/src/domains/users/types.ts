@@ -2,13 +2,9 @@ export interface LoginRequest {
     email: string;
     password: string;
 }
+
 export type AvailableRole = 'DOCTOR' | 'PATIENT';
 export type Role = AvailableRole | 'ADMIN' | 'CLINIC';
-
-export const RoleDisplay: Record<AvailableRole, string> = {
-    DOCTOR: 'Лікар',
-    PATIENT: 'Пацієнт'
-};
 
 export interface LoginResponse {
     token: string;
@@ -23,17 +19,26 @@ export interface SignUpRequest {
     role: AvailableRole;
 }
 
-export interface UserResponse{
+export interface UserResponse {
     id: string;
     email: string;
     role: Role;
 }
 
+export interface Profile {
+    email: string;
+    id: string;
+    firstName: string;
+    lastName: string;
+    specialization: string;
+    avatarUrl: string;
+    phone: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export interface MeResponse {
     userId: string;
     role: Role;
-    profile: {
-        email: string;
-        id: string;
-    }
+    profile: Profile;
 }

@@ -1,15 +1,16 @@
-import type {SVGProps} from "react";
-import type {JSX} from "react/jsx-runtime";
+interface LogoProps {
+    height?: number;
+    width?: number;
+}
 
-export const Logo = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => (
+export const Logo = ({height = 100, width = 100}: LogoProps) => (
     <svg
-        width={100}
-        height={100}
+        width={height}
+        height={width}
         viewBox="0 0 172 172"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        {...props}
     >
         <rect width={172} height={172} fill="url(#pattern0_75_6)"/>
         <defs>

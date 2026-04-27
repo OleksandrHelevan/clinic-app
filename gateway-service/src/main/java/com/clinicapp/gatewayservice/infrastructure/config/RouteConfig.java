@@ -18,13 +18,14 @@ public class RouteConfig {
     private final AuthenticationFilter authFilter;
 
     @Bean
-    public RouteLocator routes(RouteLocatorBuilder routeLocatorBuilder) {
-        return routeLocatorBuilder.routes()
-                .route("auth-service-public", r -> r.path("/api/v1/login", "/api/v1/sign-up", "/config")
+    public RouteLocator routes(RouteLocatorBuilder builder) {
+        return builder.routes()
+
+                .route("auth-service-public", r -> r.path("/api/v1/login", "/api/v1/sign-up")
                         .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(loginRateLimiter())))
                         .uri("lb://auth-service"))
 
-                .route("auth-service-protected", r -> r.path("/api/v1/users/**", "/api/v1/internal/me-context")
+                .route("auth-service-protected", r -> r.path("/api/v1/users/**", "/api/v1/internal/**")
                         .filters(f -> f.filter(authFilter.apply(new AuthenticationFilter.Config()))
                                 .requestRateLimiter(c -> c.setRateLimiter(standardRateLimiter()).setKeyResolver(userKeyResolver())))
                         .uri("lb://auth-service"))
@@ -43,6 +44,9 @@ public class RouteConfig {
                         .filters(f -> f.filter(authFilter.apply(new AuthenticationFilter.Config()))
                                 .requestRateLimiter(c -> c.setRateLimiter(standardRateLimiter()).setKeyResolver(userKeyResolver())))
                         .uri("lb://booking-service"))
+
+                .route("chat-service", r -> r.path("/api/v1/chat/**")
+                        .uri("lb://chat-service"))
 
                 .route("auth-service-docs", r -> r.path("/auth-docs/**")
                         .filters(f -> f.rewritePath("/auth-docs/(?<segment>.*)", "/${segment}"))

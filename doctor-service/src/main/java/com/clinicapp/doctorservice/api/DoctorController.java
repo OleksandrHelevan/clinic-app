@@ -4,6 +4,7 @@ import com.clinicapp.doctorservice.application.dto.AddDoctorProfileRequest;
 import com.clinicapp.doctorservice.application.dto.DoctorResponse;
 import com.clinicapp.doctorservice.application.service.DoctorService;
 import com.clinicapp.doctorservice.domain.doctor.Specialization;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class DoctorController {
 
     @GetMapping("/me")
     public ResponseEntity<DoctorResponse> getMyProfile(
+            @Parameter(hidden = true)
             @RequestHeader(value = "X-User-Id") String userId) {
         log.info("Fetching own doctor profile for userId: {}", userId);
         return new ResponseEntity<>(doctorService.getById(userId), HttpStatus.OK);
@@ -45,6 +47,7 @@ public class DoctorController {
     @PatchMapping("/profile")
     public ResponseEntity<DoctorResponse> updateMyDoctorProfile(
             @Valid @RequestBody AddDoctorProfileRequest request,
+            @Parameter(hidden = true)
             @RequestHeader(value = "X-User-Id") String userId) {
         log.info("Initiating profile update for userId: {}", userId);
         DoctorResponse updatedProfile = doctorService.addDoctorProfile(userId, request);

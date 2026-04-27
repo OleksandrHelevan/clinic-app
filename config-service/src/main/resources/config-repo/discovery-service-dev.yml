@@ -3,6 +3,8 @@ server:
 
 logging:
   level:
-    com.netflix.eureka: OFF
-    com.netflix.discovery: OFF
-    root: DEBUG
+    root: INFO
+    com.clinicapp: WARN
+    org.apache.kafka: ERROR
+    org.springframework.security: WARN
+    org.springframework: WARN

@@ -140,6 +140,9 @@ services:
       SERVER_PORT: ${GATEWAY_SERVICE_PORT}
     networks:
       - clinic-network
+    depends_on:
+      discovery-service:
+        condition: service_healthy
 
   chat-service:
     build:

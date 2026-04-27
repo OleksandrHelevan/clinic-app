@@ -1,6 +1,6 @@
 package com.clinicapp.chatservice.application.service;
 
-import com.clinicapp.chatservice.application.dto.ChatEvent;
+import com.clinicapp.chatservice.domains.event.ChatEvent;
 import com.clinicapp.chatservice.domains.bucket.ChatBucket;
 import com.clinicapp.chatservice.domains.message.MessageStatus;
 import lombok.RequiredArgsConstructor;

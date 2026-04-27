@@ -11,5 +11,8 @@ app:
 
 logging:
   level:
-    org.springframework.cloud.gateway: TRACE
-    com.clinicapp: DEBUG
+    root: INFO
+    com.clinicapp: WARN
+    org.apache.kafka: ERROR
+    org.springframework.security: WARN
+    org.springframework: WARN

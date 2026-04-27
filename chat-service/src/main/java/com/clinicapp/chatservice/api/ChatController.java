@@ -1,6 +1,6 @@
 package com.clinicapp.chatservice.api;
 
-import com.clinicapp.chatservice.application.dto.ChatEvent;
+import com.clinicapp.chatservice.domains.event.ChatEvent;
 import com.clinicapp.chatservice.application.service.ChatEventService;
 import com.clinicapp.chatservice.application.service.ChatMessageService;
 import com.clinicapp.chatservice.application.service.ChatRoomService;

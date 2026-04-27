@@ -1,6 +1,5 @@
-package com.clinicapp.chatservice.application.dto;
+package com.clinicapp.chatservice.domains.event;
 
-import com.clinicapp.chatservice.domains.event.ChatEventType;
 import com.clinicapp.chatservice.domains.message.MessageStatus;
 import lombok.*;
 
