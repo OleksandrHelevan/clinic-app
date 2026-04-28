@@ -17,6 +17,7 @@ public class ChatEvent {
 
     private String messageId;
     private MessageStatus status;
+    private Boolean isLiked;
 
     @Builder.Default
     private LocalDateTime timestamp = LocalDateTime.now();

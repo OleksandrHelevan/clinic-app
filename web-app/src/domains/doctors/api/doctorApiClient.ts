@@ -1,5 +1,5 @@
 import type {GetDoctorsResponse, Specialization} from "../types.ts";
-import {apiClient} from "../../../service/apiClient.ts";
+import {apiClient} from "../../../services/apiClient.ts";
 import {DOCTORS_PAGE_SIZE} from "../contants.ts";
 
 export const doctorApiClient = {

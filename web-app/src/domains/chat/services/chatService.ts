@@ -1,29 +1,34 @@
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import type { ChatMessage, ChatEvent, ChatCallbacks } from '../types.ts';
+import type { ChatMessage, ChatEvent, ChatCallbacks, SendMessagePayload } from '../types.ts';
+import { getFromStorage } from "../../../utils/localStorageUtil.ts";
 
-export class chatService {
+export class ChatService {
     private client: Client | null = null;
     private currentUserId: string | null = null;
-    private readonly WS_URL = 'http://localhost:8085/ws';
+    private readonly WS_BASE_URL = '/api/chat';
 
     public connect(userId: string, callbacks: ChatCallbacks): void {
-        if (this.client?.connected) return;
+        if (this.client?.active) return;
 
         this.currentUserId = userId;
+        const token = getFromStorage("token");
+
+        const wsUrlWithToken = `${this.WS_BASE_URL}?token=${token}`;
 
         this.client = new Client({
-            webSocketFactory: () => new SockJS(this.WS_URL),
+            webSocketFactory: () => new SockJS(wsUrlWithToken),
             reconnectDelay: 5000,
             onConnect: () => {
+                console.log("WebSocket Connected as user:", userId);
                 callbacks.onConnect();
 
-                this.client?.subscribe(`/user/${this.currentUserId}/queue/messages`, (payload) => {
+                this.client?.subscribe('/user/queue/messages', (payload) => {
                     const message: ChatMessage = JSON.parse(payload.body);
                     callbacks.onMessage(message);
                 });
 
-                this.client?.subscribe(`/user/${this.currentUserId}/queue/events`, (payload) => {
+                this.client?.subscribe('/user/queue/events', (payload) => {
                     const event: ChatEvent = JSON.parse(payload.body);
                     callbacks.onEvent(event);
                 });
@@ -51,30 +56,26 @@ export class chatService {
         return !!this.client?.connected;
     }
 
-    public sendMessage(message: ChatMessage): void {
-        if (!this.isConnected) {
-            console.warn("Cannot send message: WebSocket is not connected.");
-            return;
-        }
+    public sendMessage(payload: SendMessagePayload): void {
+        if (!this.isConnected) return;
 
         this.client!.publish({
             destination: '/app/chat',
-            body: JSON.stringify(message),
+            body: JSON.stringify(payload),
         });
     }
 
-    public sendEvent(type: "TYPING" | "STOPPED_TYPING", recipientId: string): void {
+    public sendEvent(eventParams: Partial<ChatEvent> & { type: ChatEvent["type"], recipientId: string }): void {
         if (!this.isConnected || !this.currentUserId) return;
 
-        const event: ChatEvent = {
-            type,
-            senderId: this.currentUserId,
-            recipientId
-        };
+        const fullEvent: ChatEvent = {
+            ...eventParams,
+            senderId: this.currentUserId
+        } as ChatEvent;
 
         this.client!.publish({
             destination: '/app/chat.sendEvent',
-            body: JSON.stringify(event),
+            body: JSON.stringify(fullEvent),
         });
     }
 }

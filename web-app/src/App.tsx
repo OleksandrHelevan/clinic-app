@@ -5,7 +5,7 @@ import SignUpPage from './pages/SignUpPage/SignUpPage.tsx';
 import RootLayout from "./layouts/RootLayout/RootLayout.tsx";
 import {QueryClientProvider} from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
-import {queryClient} from "./service/queryClient.ts";
+import {queryClient} from "./services/queryClient.ts";
 import ProfilePage from "./pages/ProfilePage/ProfilePage.tsx";
 import {DoctorsPage} from "./pages/DoctorsPage/DoctorsPage.tsx";
 import RequireAuth from "./components/RequireAuth/RequireAuth.tsx";

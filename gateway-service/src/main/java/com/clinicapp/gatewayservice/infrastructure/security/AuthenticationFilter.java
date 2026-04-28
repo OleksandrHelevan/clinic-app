@@ -37,12 +37,19 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             log.info("Gateway: Security check for request [{}] {}", request.getMethod(), path);
 
             String authHeader = request.getHeaders().getFirst("Authorization");
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                log.warn("Gateway: Request rejected. Missing or invalid Authorization header for path: {}", path);
+            String token = null;
+
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                token = authHeader.substring(7);
+            }
+            else if (request.getQueryParams().containsKey("token")) {
+                token = request.getQueryParams().getFirst("token");
+            }
+            if (token == null) {
+                log.warn("Gateway: Request rejected. Missing token for path: {}", path);
                 return onError(exchange);
             }
 
-            String token = authHeader.substring(7);
             try {
                 Claims claims = jwtUtil.validate(token);
                 String userId = claims.getSubject();

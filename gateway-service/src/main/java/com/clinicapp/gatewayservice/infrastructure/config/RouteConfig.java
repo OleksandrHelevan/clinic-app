@@ -46,6 +46,8 @@ public class RouteConfig {
                         .uri("lb://booking-service"))
 
                 .route("chat-service", r -> r.path("/api/v1/chat/**")
+                        .filters(f -> f.filter(authFilter.apply(new AuthenticationFilter.Config()))
+                                .requestRateLimiter(c -> c.setRateLimiter(standardRateLimiter()).setKeyResolver(userKeyResolver())))
                         .uri("lb://chat-service"))
 
                 .route("auth-service-docs", r -> r.path("/auth-docs/**")

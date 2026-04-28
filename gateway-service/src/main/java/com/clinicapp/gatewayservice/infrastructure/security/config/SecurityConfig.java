@@ -1,4 +1,4 @@
-package com.clinicapp.gatewayservice.infrastructure.security;
+package com.clinicapp.gatewayservice.infrastructure.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

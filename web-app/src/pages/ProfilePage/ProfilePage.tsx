@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMe } from "../../domains/users/useMe/useMe.ts";
-import { useChat } from "../../hooks/useChat/useChat.ts";
 import Button from "../../components/Button/Button.tsx";
 import { Chat } from "../../components/Chat/Chat.tsx";
 import { Loader } from "../../components/Loader/Loader.tsx";
 import type { DoctorResponse } from "../../domains/doctors/types.ts";
 
 import "./ProfilePage.css";
-import {InboxSection} from "./components/InboxSection.tsx";
-import {ProfileInfoCard} from "./components/ProfileInfoCard.tsx";
+import { InboxSection } from "./components/InboxSection.tsx";
+import { ProfileInfoCard } from "./components/ProfileInfoCard.tsx";
+import { useInbox } from "../../domains/chat/useInbox/useInbox.ts";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
     const { data: user, isLoading, isError } = useMe();
     const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
-    const { messages } = useChat(user?.profile?.id || "");
+
+    const { inbox} = useInbox(user?.profile?.id || "");
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -49,19 +50,16 @@ export default function ProfilePage() {
         <div className="profile-wrapper">
             <div className="profile-container">
 
-                {/* Картка з інформацією */}
                 <ProfileInfoCard user={user} />
 
-                {/* Секція повідомлень (лише для лікарів) */}
-                {user.role === "DOCTOR" && (
+                {user.role === "DOCTOR" && user.profile?.id && (
                     <InboxSection
-                        messages={messages}
+                        messages={inbox}
                         currentUserId={user.profile.id}
                         onSelectPatient={setSelectedPatientId}
                     />
                 )}
 
-                {/* Кнопка виходу */}
                 <div className="profile-actions">
                     <button className="btn-logout" onClick={handleLogout}>
                         Log out
@@ -69,7 +67,7 @@ export default function ProfilePage() {
                 </div>
             </div>
 
-            {selectedPatientId && (
+            {selectedPatientId && user.profile?.id && (
                 <Chat
                     currentUserId={user.profile.id}
                     onClose={() => setSelectedPatientId(null)}
