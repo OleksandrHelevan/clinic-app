@@ -57,7 +57,8 @@ export const useChat = (
                 isLiked: false
             };
             addMessage(optimisticMessage);
-            queryClient.invalidateQueries({queryKey: [INBOX_QUERY_KEY, currentUserId]});
+            queryClient.invalidateQueries({queryKey: [INBOX_QUERY_KEY, currentUserId]}).then(() => {
+            });
         },
         [currentUserId, recipientId, wsService, addMessage, queryClient]
     );
