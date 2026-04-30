@@ -16,7 +16,7 @@ export default function ProfilePage() {
     const { data: user, isLoading, isError } = useMe();
     const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
 
-    const { inbox} = useInbox(user?.profile?.id || "");
+    const { data: inbox} = useInbox(user?.profile?.id || "");
 
     const handleLogout = () => {
         localStorage.removeItem("token");

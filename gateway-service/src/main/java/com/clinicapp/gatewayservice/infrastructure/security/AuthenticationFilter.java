@@ -34,38 +34,22 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             ServerHttpRequest request = exchange.getRequest();
             String path = request.getURI().getPath();
 
-            log.info("Gateway: Security check for request [{}] {}", request.getMethod(), path);
+            if (path.contains("/chat/")) {
+                return chain.filter(exchange);
+            }
 
             String authHeader = request.getHeaders().getFirst("Authorization");
-            String token = null;
-
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                token = authHeader.substring(7);
-            }
-            else if (request.getQueryParams().containsKey("token")) {
-                token = request.getQueryParams().getFirst("token");
-            }
-            if (token == null) {
-                log.warn("Gateway: Request rejected. Missing token for path: {}", path);
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 return onError(exchange);
             }
 
             try {
-                Claims claims = jwtUtil.validate(token);
-                String userId = claims.getSubject();
-                String role = claims.get("role", String.class);
-
-                log.info("Gateway: Authorization successful. User: ID={}, Role={}", userId, role);
-
+                Claims claims = jwtUtil.validate(authHeader.substring(7));
                 ServerHttpRequest mutatedRequest = request.mutate()
-                        .header("X-User-Id", userId)
-                        .header("X-Role", role)
+                        .header("X-User-Id", claims.getSubject())
                         .build();
-
                 return chain.filter(exchange.mutate().request(mutatedRequest).build());
-
             } catch (Exception e) {
-                log.error("Gateway: Token validation failed for path {}. Reason: {}", path, e.getMessage());
                 return onError(exchange);
             }
         };

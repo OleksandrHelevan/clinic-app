@@ -1,22 +1,32 @@
 import React from "react";
-import type {ChatMessage} from "../../../types/chat.ts";
+import type {ChatMessage, GetHistoryResponse} from "../../../domains/chat/types.ts";
 
 interface InboxSectionProps {
-    messages: ChatMessage[];
+    messages: GetHistoryResponse | undefined;
     currentUserId: string;
     onSelectPatient: (patientId: string) => void;
 }
 
 export const InboxSection: React.FC<InboxSectionProps> = ({ messages, currentUserId, onSelectPatient }) => {
 
-    const latestMessagesMap = messages.reduce((acc: Record<string, ChatMessage>, msg) => {
-        const partnerId = msg.senderId === currentUserId ? msg.recipientId : msg.senderId;
+    const latestMessagesMap = (messages ?? []).reduce(
+        (acc: Record<string, ChatMessage>, msg) => {
+            const partnerId =
+                msg.senderId === currentUserId
+                    ? msg.recipientId
+                    : msg.senderId;
 
-        if (!acc[partnerId] || new Date(msg.timestamp) > new Date(acc[partnerId].timestamp)) {
-            acc[partnerId] = msg;
-        }
-        return acc;
-    }, {});
+            if (
+                !acc[partnerId] ||
+                new Date(msg.timestamp) > new Date(acc[partnerId].timestamp)
+            ) {
+                acc[partnerId] = msg;
+            }
+
+            return acc;
+        },
+        {}
+    );
 
     const sortedChats = Object.values(latestMessagesMap).sort((a, b) =>
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()

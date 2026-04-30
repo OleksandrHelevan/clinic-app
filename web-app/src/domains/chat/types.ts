@@ -29,3 +29,5 @@ export interface ChatCallbacks {
     onMessage: (msg: ChatMessage) => void;
     onEvent: (event: ChatEvent) => void;
 }
+
+export type GetHistoryResponse = ChatMessage[];

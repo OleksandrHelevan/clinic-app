@@ -11,7 +11,13 @@ interface ChatProps {
 
 export const Chat = ({ doctor, onClose, currentUserId }: ChatProps) => {
     const [inputValue, setInputValue] = useState('');
-    const { messages, sendMessage, sendTypingEvent, isTyping, connected } = useChat(currentUserId, doctor.id);
+    const {
+        messages,
+        isTyping,
+        connected,
+        sendMessage,
+        sendTypingEvent
+    } = useChat(currentUserId, doctor.id);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
