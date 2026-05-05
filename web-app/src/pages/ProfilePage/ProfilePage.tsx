@@ -10,6 +10,7 @@ import "./ProfilePage.css";
 import { InboxSection } from "./components/InboxSection.tsx";
 import { ProfileInfoCard } from "./components/ProfileInfoCard.tsx";
 import { useInbox } from "../../domains/chat/useInbox/useInbox.ts";
+import {LOGIN_PATH} from "../../constants/paths.ts";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function ProfilePage() {
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
-        navigate("/login");
+        navigate(LOGIN_PATH);
     };
 
     if (isLoading) {
@@ -38,7 +39,7 @@ export default function ProfilePage() {
                 <div className="profile-error-card">
                     <h2>Access Denied</h2>
                     <p>Please log in to view your profile.</p>
-                    <Button variant="primary" onClick={() => navigate("/login")}>
+                    <Button variant="primary" onClick={() => navigate(LOGIN_PATH)}>
                         Log in
                     </Button>
                 </div>

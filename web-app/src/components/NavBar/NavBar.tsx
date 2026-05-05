@@ -3,6 +3,7 @@ import { Logo } from "../../assets/Logo.tsx";
 import { Avatar } from "../../assets/Avatar.tsx";
 import "./NavBar.css";
 import {ChatIcon} from "../../assets/ChatIcon.tsx";
+import {DOCTORS_PATH, LOGIN_PATH, ME_PATH} from "../../constants/paths.ts";
 
 interface NavBarProps {
     isAuthenticated?: boolean;
@@ -20,7 +21,7 @@ export function NavBar({ isAuthenticated = false }: NavBarProps) {
             <ul className="navbar-links">
                 <li><NavLink to="/dashboard">Dashboard</NavLink></li>
                 <li><NavLink to="/appointments">Appointments</NavLink></li>
-                <li><NavLink to="/doctors">Doctors</NavLink></li>
+                <li><NavLink to={DOCTORS_PATH}>Doctors</NavLink></li>
                 <li><NavLink to="/records">Records</NavLink></li>
             </ul>
 
@@ -28,12 +29,12 @@ export function NavBar({ isAuthenticated = false }: NavBarProps) {
                 {isAuthenticated ? (
                     <>
                         <ChatIcon height={32} width={32} />
-                        <Link to="/me" className="avatar-link">
+                        <Link to={ME_PATH} className="avatar-link">
                             <Avatar height={32} width={32} />
                         </Link>
                     </>
                 ) : (
-                    <Link to="/login" className="login-btn">
+                    <Link to={LOGIN_PATH} className="login-btn">
                         Log in
                     </Link>
                 )}

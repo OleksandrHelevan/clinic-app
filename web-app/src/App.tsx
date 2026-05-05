@@ -9,6 +9,8 @@ import {queryClient} from "./services/queryClient.ts";
 import ProfilePage from "./pages/ProfilePage/ProfilePage.tsx";
 import {DoctorsPage} from "./pages/DoctorsPage/DoctorsPage.tsx";
 import RequireAuth from "./components/RequireAuth/RequireAuth.tsx";
+import {DOCTOR_PATH, LOGIN_PATH, ME_PATH, SIGNUP_PATH} from "./constants/paths.ts";
+import {NotFoundPage} from "./pages/NotFoundPage/NotFoundPage.tsx";
 
 export default function App() {
     return (
@@ -19,17 +21,17 @@ export default function App() {
                     <Route element={<RootLayout />}>
 
                         <Route index element={<HomePage />} />
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/sign-up" element={<SignUpPage />} />
+                        <Route path={LOGIN_PATH} element={<LoginPage />} />
+                        <Route path={SIGNUP_PATH} element={<SignUpPage />} />
 
                         <Route element={<RequireAuth />}>
-                            <Route path="/me" element={<ProfilePage />} />
-                            <Route path="/doctors" element={<DoctorsPage />} />
+                            <Route path={ME_PATH} element={<ProfilePage />} />
+                            <Route path={DOCTOR_PATH} element={<DoctorsPage />} />
                         </Route>
 
                     </Route>
 
-                    <Route path="*" element={<div>Сторінку не знайдено (404)</div>} />
+                    <Route path="*" element={<NotFoundPage/>} />
                 </Routes>
             </BrowserRouter>
         </QueryClientProvider>

@@ -5,6 +5,7 @@ import Input from "../../components/TextInput/TextInput.tsx";
 import Button from "../../components/Button/Button.tsx";
 import './SignUpPage.css';
 import {useSignUp} from "../../domains/users/useSignUp/useSignUp.ts";
+import {LOGIN_PATH} from "../../constants/paths.ts";
 
 export default function SignUpPage() {
     const {mutate} = useSignUp()
@@ -78,7 +79,7 @@ export default function SignUpPage() {
                                 <p>Вже маєте аккаунт?</p>
                                 <Link
                                     className="form-link"
-                                    to={"/login"}
+                                    to={LOGIN_PATH}
                                 >
                                     Увійти
                                 </Link>

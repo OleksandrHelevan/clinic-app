@@ -6,6 +6,7 @@ import './LoginPage.css'
 import TextInput from "../../components/TextInput/TextInput.tsx";
 import {Link} from "react-router-dom";
 import {Logo} from "../../assets/Logo.tsx";
+import {SIGNUP_PATH} from "../../constants/paths.ts";
 
 export default function LoginPage() {
     const {mutate, isPending} = useLogin();
@@ -18,8 +19,8 @@ export default function LoginPage() {
         <div className="wrapper">
             <Form<LoginRequest>
                 onSubmit={onSubmit}
-                title="Вхід в Avyro"
-                subtitle="Авторизуйтесь, щоб продовжити роботу"
+                title="Login to Avyro"
+                subtitle="Authorize to Avyro"
                 logo={<Logo/>}
             >
                 {() => (
@@ -30,25 +31,25 @@ export default function LoginPage() {
                             type="email"
                             placeholder="doctor@avyro.com"
                             rules={{
-                                required: "Введіть email",
-                                pattern: {value: /^\S+@\S+$/i, message: "Некоректний email"}
+                                required: "Enteer email",
+                                pattern: {value: /^\S+@\S+$/i, message: "Wrong email"}
                             }}
                         />
 
                         <TextInput
                             name="password"
-                            label="Пароль"
+                            label="Password"
                             type="password"
                             placeholder="••••••••"
-                            rules={{required: "Введіть пароль", minLength: {value: 6, message: "Мін. 6 символів"}}}
+                            rules={{required: "Enter password", minLength: {value: 6, message: "Min. 6 characters"}}}
                         />
                         <div className="form-footer">
                             <Button variant="primary" type="submit" className="w-full" disabled={isPending}>
-                                Увійти
+                                Login
                             </Button>
                             <div className={"sign-up-flow"}>
-                                <p>Нема акаунту?</p>
-                                <Link to={"/sign-up"}>Зареєструватись</Link>
+                                <p>Don't have account?</p>
+                                <Link to={SIGNUP_PATH}>Sign Up</Link>
                             </div>
                         </div>
 
