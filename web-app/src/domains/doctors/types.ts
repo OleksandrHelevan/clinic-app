@@ -12,10 +12,10 @@ export interface ProfileResponse {
     updatedAt: string | null;
 }
 
-export interface DoctorResponse extends ProfileResponse{
+export interface UserResponse extends ProfileResponse{
     id: string;
     specialization: Specialization | null;
     email: string;
 }
 
-export type GetDoctorsResponse = PaginationResponse<DoctorResponse>
+export type GetDoctorsResponse = PaginationResponse<UserResponse>

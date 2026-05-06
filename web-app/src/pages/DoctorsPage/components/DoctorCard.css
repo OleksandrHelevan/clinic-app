@@ -4,7 +4,7 @@
     gap: 20px;
     padding: 20px;
     background-color: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
+    border: 2px solid var(--border-strong);
     border-radius: 12px;
     transition: all 0.3s ease;
     color: var(--text-body);
@@ -68,7 +68,7 @@
     margin-top: 12px;
     padding: 8px 16px;
     background-color: var(--bg-surface);
-    color: var(--text-heading);
+    color: var(--text-inverse);
     border: 1px solid var(--border-base);
     border-radius: 6px;
     font-size: 0.9rem;
@@ -79,7 +79,7 @@
 }
 
 .btn-write:hover {
-    background: var(--primary-grad);
+    background: var(--primary-grad-hover);
     color: var(--text-inverse);
     border-color: transparent;
 }

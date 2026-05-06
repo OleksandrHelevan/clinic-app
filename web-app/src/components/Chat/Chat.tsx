@@ -1,45 +1,52 @@
-import type { DoctorResponse } from "../../domains/doctors/types.ts";
-import { useChat } from "../../domains/chat/useChat/useChat.ts";
-import { ChatHeader } from "./components/ChatHeader";
-import { ChatMessages } from "./components//ChatMessages";
-import { ChatInput } from "./components//ChatInput";
+import { useState } from 'react';
+import { type ChatUser } from "./components/ChatHeader.tsx";
+import { ChatInboxView } from "./components/ChatInboxView.tsx";
 import './Chat.css';
+import {ChatActiveView} from "./components/ChatActiveViewї.tsx";
 
 interface ChatProps {
-    doctor: DoctorResponse;
+    user?: ChatUser;
     onClose: () => void;
     currentUserId: string;
 }
 
-export const Chat = ({ doctor, onClose, currentUserId }: ChatProps) => {
-    const {
-        messages,
-        isTyping,
-        connected,
-        sendMessage,
-        sendTypingEvent
-    } = useChat(currentUserId, doctor.id);
+export const Chat = ({ user, onClose, currentUserId }: ChatProps) => {
+    const [selectedUser, setSelectedUser] = useState<ChatUser | undefined>(undefined);
+    const [showInboxManually, setShowInboxManually] = useState(false);
+
+    const activeUser = showInboxManually ? selectedUser : (user || selectedUser);
+
+    const handleBack = () => {
+        setShowInboxManually(true);
+        setSelectedUser(undefined);
+    };
+
+    const handleSelectFromInbox = (id: string) => {
+        setShowInboxManually(false);
+        setSelectedUser({
+            id,
+            firstName: "User",
+            lastName: id
+        });
+    };
 
     return (
         <div className="chat-overlay">
             <div className="chat-container">
-                <ChatHeader
-                    doctor={doctor}
-                    connected={connected}
-                    onClose={onClose}
-                />
-
-                <ChatMessages
-                    messages={messages}
-                    currentUserId={currentUserId}
-                    isTyping={isTyping}
-                />
-
-                <ChatInput
-                    onSendMessage={sendMessage}
-                    onTyping={sendTypingEvent}
-                    placeholder={isTyping ? `${doctor.firstName} typing...` : "Type a message..."}
-                />
+                {!activeUser ? (
+                    <ChatInboxView
+                        currentUserId={currentUserId}
+                        onSelectChat={handleSelectFromInbox}
+                        onClose={onClose}
+                    />
+                ) : (
+                    <ChatActiveView
+                        user={activeUser}
+                        currentUserId={currentUserId}
+                        onClose={onClose}
+                        onBack={handleBack}
+                    />
+                )}
             </div>
         </div>
     );

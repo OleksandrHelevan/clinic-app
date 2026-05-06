@@ -54,6 +54,13 @@ public class RouteConfig {
                         .filters(f -> f.rewritePath("/auth-docs/(?<segment>.*)", "/${segment}"))
                         .uri("lb://auth-service"))
 
+                .route("chat-service-docs", r -> r.path("/chat-docs/**")
+                        .filters(f -> f.rewritePath("/chat-docs/(?<segment>.*)", "/${segment}"))
+                        .uri("lb://chat-service"))
+
+                .route("chat-websocket", r -> r.path("/ws/**")
+                        .uri("lb:ws://chat-service"))
+
                 .route("patient-service-docs", r -> r.path("/patient-docs/**")
                         .filters(f -> f.rewritePath("/patient-docs/(?<segment>.*)", "/${segment}"))
                         .uri("lb://patient-service"))

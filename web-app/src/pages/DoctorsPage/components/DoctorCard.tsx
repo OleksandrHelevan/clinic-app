@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import type { DoctorResponse } from "../../../domains/doctors/types.ts";
+import { useState } from 'react';
+import type { UserResponse } from "../../../domains/doctors/types.ts";
 import './DoctorCard.css';
 import { DefaultAvatar } from "../../../assets/DefaultAvatar.tsx";
+import Button from "../../../components/Button/Button.tsx";
 
 interface DoctorCardProps {
-    doctor: DoctorResponse;
-    onWriteMessage: (doctor: DoctorResponse) => void;
+    doctor: UserResponse;
+    onWriteMessage: (doctor: UserResponse) => void;
 }
 
-export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, onWriteMessage }) => {
+export const DoctorCard = ({ doctor, onWriteMessage }: DoctorCardProps) => {
     const [imageError, setImageError] = useState(false);
 
     return (
@@ -35,12 +36,12 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, onWriteMessage }
                     <p>{doctor.phone}</p>
                 </div>
 
-                <button
+                <Button
                     className="btn-write"
                     onClick={() => onWriteMessage(doctor)}
                 >
                     Message
-                </button>
+                </Button>
             </div>
         </div>
     );

@@ -30,7 +30,8 @@ springdoc:
         url: /doctor-docs/v3/api-docs
       - name: Booking Service
         url: /booking-docs/v3/api-docs
-
+      - name: Chat Service
+        url: /chat-docs/v3/api-docs
 security:
   jwt:
     secret-key: '87874be75cf3f44a75fac959d65be8d9955b22b90f60d36c4e64b3d85074185263b7778e369105e38068a20652b5c2d830861b05720bbba62ade887d349082bdec33d847095d756f47c441e217a7969b10b7d0288c3a2d84e840115b892cf893'

@@ -1,23 +1,42 @@
-import type {DoctorResponse} from "../../../domains/doctors/types.ts";
-
-
-interface ChatHeaderProps {
-    doctor: DoctorResponse;
-    connected: boolean;
-    onClose: () => void;
+export interface ChatUser {
+    id: string;
+    firstName: string;
+    lastName: string;
 }
 
-export const ChatHeader = ({ doctor, connected, onClose }: ChatHeaderProps) => (
+interface ChatHeaderProps {
+    user: ChatUser;
+    connected: boolean;
+    onClose: () => void;
+    onBack?: () => void;
+}
+
+export const ChatHeader = ({ user, connected, onClose, onBack }: ChatHeaderProps) => (
     <header className="chat-header">
-        <div className="chat-header-info">
-            <span className="chat-header-title">
-                {doctor.firstName} {doctor.lastName}
-            </span>
-            <div className="chat-header-status">
-                <span className={`status-indicator ${connected ? 'online' : 'offline'}`}></span>
-                {connected ? 'Online' : 'Offline'}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {onBack && (
+                <button
+                    onClick={onBack}
+                    aria-label="Back to inbox"
+                    style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', display: 'flex', padding: 0 }}
+                >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </button>
+            )}
+            <div className="chat-header-info">
+                <span className="chat-header-title">
+                    {user.firstName} {user.lastName}
+                </span>
+                <div className="chat-header-status">
+                    <span className={`status-indicator ${connected ? 'online' : 'offline'}`}></span>
+                    {connected ? 'Online' : 'Offline'}
+                </div>
             </div>
         </div>
+
         <button onClick={onClose} className="chat-close-btn" aria-label="Close chat">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

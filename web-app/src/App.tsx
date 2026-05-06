@@ -9,7 +9,7 @@ import {queryClient} from "./services/queryClient.ts";
 import ProfilePage from "./pages/ProfilePage/ProfilePage.tsx";
 import {DoctorsPage} from "./pages/DoctorsPage/DoctorsPage.tsx";
 import RequireAuth from "./components/RequireAuth/RequireAuth.tsx";
-import {DOCTOR_PATH, LOGIN_PATH, ME_PATH, SIGNUP_PATH} from "./constants/paths.ts";
+import {DOCTORS_PATH, LOGIN_PATH, ME_PATH, SIGNUP_PATH} from "./constants/paths.ts";
 import {NotFoundPage} from "./pages/NotFoundPage/NotFoundPage.tsx";
 
 export default function App() {
@@ -26,7 +26,7 @@ export default function App() {
 
                         <Route element={<RequireAuth />}>
                             <Route path={ME_PATH} element={<ProfilePage />} />
-                            <Route path={DOCTOR_PATH} element={<DoctorsPage />} />
+                            <Route path={DOCTORS_PATH} element={<DoctorsPage />} />
                         </Route>
 
                     </Route>

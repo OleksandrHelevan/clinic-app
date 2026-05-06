@@ -1,29 +1,33 @@
-import type {Specialization, DoctorResponse} from "../../domains/doctors/types.ts";
+import type {Specialization, UserResponse} from "../../domains/doctors/types.ts";
 import {useGetDoctors} from "../../domains/doctors/useGetDoctors/useGetDoctors.ts";
 import {DoctorCard} from "./components/DoctorCard.tsx";
 import {ALL_SPECIALIZATIONS} from "../../domains/doctors/contants.ts";
-import {Chat} from "../../components/Chat/Chat.tsx";
 import {getFromStorage} from "../../utils/localStorageUtil.ts";
 import {Loader} from "../../components/Loader/Loader.tsx";
 import './DoctorsPage.css';
 import {useState} from "react";
+import {useChatGlobal} from "../../components/Chat/components/ChatContext.tsx";
 
 export const DoctorsPage = () => {
     const [selectedSpec, setSelectedSpec] = useState<Specialization | undefined>(undefined);
     const [page, setPage] = useState(0);
 
-    const [activeChatDoctor, setActiveChatDoctor] = useState<DoctorResponse | null>(null);
+    const {openChat} = useChatGlobal();
 
     const {data, isLoading, isError, isPlaceholderData} = useGetDoctors(selectedSpec, page);
 
     const currentUserId = getFromStorage<string>("userId") || "";
 
-    const handleWriteMessage = (doctor: DoctorResponse) => {
+    const handleWriteMessage = (doctor: UserResponse) => {
         if (!currentUserId) {
             alert("Please log in to start a chat.");
             return;
         }
-        setActiveChatDoctor(doctor);
+        openChat({
+            id: doctor.id,
+            firstName: doctor.firstName || " ",
+            lastName: doctor.lastName || " "
+        });
     };
 
     return (
@@ -112,14 +116,6 @@ export const DoctorsPage = () => {
                     </footer>
                 )}
             </main>
-
-            {activeChatDoctor && currentUserId && (
-                <Chat
-                    doctor={activeChatDoctor}
-                    onClose={() => setActiveChatDoctor(null)}
-                    currentUserId={currentUserId}
-                />
-            )}
         </div>
     );
 };

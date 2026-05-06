@@ -7,6 +7,22 @@ spring:
 server:
   port: 8085
 
+springwolf:
+  docket:
+    base-package: com.clinicapp.chatservice.api
+    info:
+      title: Clinic Chat Service API
+      version: 1.0.0
+      description: Документація WebSocket чату для клініки
+    servers:
+      gateway:
+        host: localhost:8080
+        protocol: ws
+        pathname: /ws
+  ui:
+    swagger-ui:
+      path: /springwolf/asyncapi-ui.html
+
 security:
   jwt:
     expiration: 3600000

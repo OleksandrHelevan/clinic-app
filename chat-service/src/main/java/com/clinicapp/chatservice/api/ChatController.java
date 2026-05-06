@@ -4,6 +4,9 @@ import com.clinicapp.chatservice.application.dto.ChatMessageDto;
 import com.clinicapp.chatservice.application.dto.SendMessageRequest;
 import com.clinicapp.chatservice.application.service.ChatMessageService;
 import com.clinicapp.chatservice.domains.event.ChatEvent;
+import io.github.springwolf.core.asyncapi.annotations.AsyncListener;
+import io.github.springwolf.core.asyncapi.annotations.AsyncOperation;
+import io.github.springwolf.core.asyncapi.annotations.AsyncPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,14 @@ public class ChatController {
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageService chatMessageService;
 
+    @AsyncListener(operation = @AsyncOperation(
+            channelName = "/app/chat",
+            description = "Client send message"
+    ))
+    @AsyncPublisher(operation = @AsyncOperation(
+            channelName = "/user/queue/messages",
+            description = "Client receive message"
+    ))
     @MessageMapping("/chat")
     public void processMessage(@Payload @Valid SendMessageRequest request) {
         try {
@@ -46,6 +57,14 @@ public class ChatController {
         }
     }
 
+    @AsyncListener(operation = @AsyncOperation(
+            channelName = "/app/chat.sendEvent",
+            description = "Client send event"
+    ))
+    @AsyncPublisher(operation = @AsyncOperation(
+            channelName = "/user/queue/events",
+            description = "Client receive event"
+    ))
     @MessageMapping("/chat.sendEvent")
     public void handleEvent(@Payload ChatEvent event) {
         chatMessageService.processEvent(event);

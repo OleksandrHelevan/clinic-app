@@ -19,5 +19,7 @@ public class ChatMessageDto {
     private String content;
     private LocalDateTime timestamp;
     private MessageStatus status;
+
+    @Builder.Default
     private boolean isLiked = false;
 }

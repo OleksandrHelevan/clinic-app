@@ -4,20 +4,16 @@ import { useMe } from "../../domains/users/useMe/useMe.ts";
 import Button from "../../components/Button/Button.tsx";
 import { Chat } from "../../components/Chat/Chat.tsx";
 import { Loader } from "../../components/Loader/Loader.tsx";
-import type { DoctorResponse } from "../../domains/doctors/types.ts";
+import type { UserResponse } from "../../domains/doctors/types.ts";
 
 import "./ProfilePage.css";
-import { InboxSection } from "./components/InboxSection.tsx";
 import { ProfileInfoCard } from "./components/ProfileInfoCard.tsx";
-import { useInbox } from "../../domains/chat/useInbox/useInbox.ts";
 import {LOGIN_PATH} from "../../constants/paths.ts";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
     const { data: user, isLoading, isError } = useMe();
     const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
-
-    const { data: inbox} = useInbox(user?.profile?.id || "");
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -53,14 +49,6 @@ export default function ProfilePage() {
 
                 <ProfileInfoCard user={user} />
 
-                {user.role === "DOCTOR" && user.profile?.id && (
-                    <InboxSection
-                        messages={inbox}
-                        currentUserId={user.profile.id}
-                        onSelectPatient={setSelectedPatientId}
-                    />
-                )}
-
                 <div className="profile-actions">
                     <button className="btn-logout" onClick={handleLogout}>
                         Log out
@@ -72,7 +60,7 @@ export default function ProfilePage() {
                 <Chat
                     currentUserId={user.profile.id}
                     onClose={() => setSelectedPatientId(null)}
-                    doctor={{ id: selectedPatientId, firstName: "Patient", lastName: "" } as DoctorResponse}
+                    doctor={{ id: selectedPatientId, firstName: "Patient", lastName: "" } as UserResponse}
                 />
             )}
         </div>

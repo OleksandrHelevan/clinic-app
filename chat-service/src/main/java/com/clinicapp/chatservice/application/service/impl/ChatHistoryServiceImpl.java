@@ -57,6 +57,7 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
                     return chatMessageMapper.toDto(lastMessage);
                 })
                 .filter(Objects::nonNull)
+                .sorted(Comparator.comparing(ChatMessageDto::getTimestamp).reversed())
                 .collect(Collectors.toList());
     }
 }

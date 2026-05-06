@@ -28,11 +28,10 @@ public interface ChatBucketRepository extends MongoRepository<ChatBucket, String
     long updateMessageLikeStatus(String messageId, boolean isLiked);
 
     @Aggregation(pipeline = {
-            "{ $match: { chatId: { $regex: ?0 } } }",
+            "{ $match: { $or: [ { 'messages.senderId': ?0 }, { 'messages.recipientId': ?0 } ] } }",
             "{ $sort: { endDate: -1 } }",
             "{ $group: { _id: '$chatId', latestBucket: { $first: '$$ROOT' } } }",
-            "{ $replaceRoot: { newRoot: '$latestBucket' } }",
-            "{ $sort: { endDate: -1 } }"
+            "{ $replaceRoot: { newRoot: '$latestBucket' } }"
     })
-    List<ChatBucket> findLastBucketsForUser(String userIdRegex);
+    List<ChatBucket> findLastBucketsForUser(String userId);
 }

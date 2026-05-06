@@ -1,6 +1,5 @@
 package com.clinicapp.chatservice.application.mapper;
 
-
 import com.clinicapp.chatservice.application.dto.ChatMessageDto;
 import com.clinicapp.chatservice.application.dto.SendMessageRequest;
 import com.clinicapp.chatservice.application.mapper.config.MapperConfig;
@@ -16,6 +15,9 @@ public interface ChatMessageMapper {
     @Mapping(target = "id", expression = "java(UUID.randomUUID().toString())")
     @Mapping(target = "timestamp", ignore = true)
     @Mapping(target = "status", ignore = true)
+    @Mapping(target = "isLiked", ignore = true)
     ChatMessage toEntity(SendMessageRequest request);
+
+    @Mapping(target = "isLiked", ignore = true)
     ChatMessageDto toDto(ChatMessage message);
 }

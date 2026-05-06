@@ -29,13 +29,11 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
 
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 String token = authHeader.substring(7);
-                // Валідуємо токен, переданий у CONNECT фреймі
                 Claims claims = jwtUtil.validate(token);
                 String userId = claims.getSubject();
 
                 accessor.setUser(() -> userId);
 
-                // Зберігаємо в атрибути сесії для PresenceEventListener
                 if (accessor.getSessionAttributes() != null) {
                     accessor.getSessionAttributes().put("userId", userId);
                 }
