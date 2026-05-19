@@ -29,7 +29,7 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
     private final ChatMessageMapper chatMessageMapper;
     private final UserService userService;
 
-    @Value("${chat.pagination.buckets-per-page:2}")
+    @Value("${chat.pagination.buckets-per-page:1}")
     private int bucketsPerPage;
 
     @Override

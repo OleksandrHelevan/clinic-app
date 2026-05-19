@@ -4,7 +4,6 @@ import { useMe } from "../../domains/users/useMe/useMe.ts";
 import Button from "../../components/Button/Button.tsx";
 import { Chat } from "../../components/Chat/Chat.tsx";
 import { Loader } from "../../components/Loader/Loader.tsx";
-import type { UserResponse } from "../../domains/doctors/types.ts";
 
 import "./ProfilePage.css";
 import { ProfileInfoCard } from "./components/ProfileInfoCard.tsx";
@@ -24,7 +23,7 @@ export default function ProfilePage() {
     if (isLoading) {
         return (
             <div className="profile-centered">
-                <Loader text="Loading profile..." />
+                <Loader />
             </div>
         );
     }
@@ -60,7 +59,7 @@ export default function ProfilePage() {
                 <Chat
                     currentUserId={user.profile.id}
                     onClose={() => setSelectedPatientId(null)}
-                    doctor={{ id: selectedPatientId, firstName: "Patient", lastName: "" } as UserResponse}
+                    user={{ id: selectedPatientId, firstName: "Patient", lastName: "" }}
                 />
             )}
         </div>

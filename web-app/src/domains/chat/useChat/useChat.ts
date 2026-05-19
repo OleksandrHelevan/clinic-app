@@ -1,31 +1,81 @@
-import {useCallback} from "react";
-import {useQueryClient} from "@tanstack/react-query";
-import {useMessagesState} from "../hooks/useMessagesState/useMessagesState.ts";
-import {useChatHistory} from "../useChatHistory/useChatHistory.ts";
-import {useTypingIndicator} from "../hooks/useTypingIndicator/useTypingIndicator.ts";
-import {useChatConnection} from "../hooks/useChatConnection/useChatConnection.ts";
-import {INBOX_QUERY_KEY} from "../useInbox/useInbox.ts";
-import {useLikeMessage} from "../hooks/useLikeMessage/useLikeMessage.ts";
-import type {ChatMessage, SendMessagePayload, ChatEvent} from "../types.ts";
+import { useCallback, useState, useEffect, useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useMessagesState } from "../hooks/useMessagesState/useMessagesState.ts";
+import { useChatHistory } from "../useChatHistory/useChatHistory.ts";
+import { useTypingIndicator } from "../hooks/useTypingIndicator/useTypingIndicator.ts";
+import { useChatConnection } from "../hooks/useChatConnection/useChatConnection.ts";
+import { INBOX_QUERY_KEY } from "../useInbox/useInbox.ts";
+import { useLikeMessage } from "../hooks/useLikeMessage/useLikeMessage.ts";
+import type { ChatMessage, SendMessagePayload, ChatEvent } from "../types.ts";
 
 export const useChat = (
     currentUserId: string,
     recipientId?: string
 ) => {
     const queryClient = useQueryClient();
+    const [page, setPage] = useState<number>(0);
+    const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(true);
+    const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(false);
 
-    const {data: historyData} = useChatHistory(currentUserId, recipientId);
+    const { data: historyData, refetch } = useChatHistory(currentUserId, recipientId, page);
 
-    const chatMessages = historyData?.messages ?? [];
+    const chatMessages = historyData?.messages;
+    const loadedPagesRef = useRef<Set<number>>(new Set());
 
-    const {messages, addMessage, updateMessageStructure} = useMessagesState(chatMessages);
+    const { messages, addMessage, updateMessageStructure, setMessages } = useMessagesState(
+        page === 0 ? chatMessages ?? [] : []
+    );
 
-    const {isTyping, handleTypingEvent} = useTypingIndicator(recipientId);
+    useEffect(() => {
+        setPage(0);
+        setHasMoreMessages(true);
+        loadedPagesRef.current.clear();
+    }, [recipientId]);
+
+    useEffect(() => {
+        if (!chatMessages) return;
+
+        if (page === 0) {
+            setMessages(chatMessages);
+            loadedPagesRef.current.add(0);
+        } else if (!loadedPagesRef.current.has(page)) {
+            if (chatMessages.length === 0) {
+                setHasMoreMessages(false);
+                return;
+            }
+
+            setMessages(prev => {
+                const existingIds = new Set(prev.map(m => m.id));
+                const uniqueNew = chatMessages.filter(m => !existingIds.has(m.id));
+                return [...uniqueNew, ...prev];
+            });
+
+            loadedPagesRef.current.add(page);
+        }
+    }, [chatMessages, page, setMessages]);
+
+    const loadMoreMessages = useCallback(async () => {
+        if (isLoadingHistory || !hasMoreMessages || !recipientId) return;
+
+        setIsLoadingHistory(true);
+        const nextPage = page + 1;
+        setPage(nextPage);
+
+        try {
+            await refetch();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoadingHistory(false);
+        }
+    }, [page, hasMoreMessages, isLoadingHistory, recipientId, refetch]);
+
+    const { isTyping, handleTypingEvent } = useTypingIndicator(recipientId);
 
     const handleChatEvent = useCallback(
         (event: ChatEvent) => {
             if (event.type === "LIKE_UPDATE" && event.messageId) {
-                updateMessageStructure(event.messageId, {liked: event.isLiked});
+                updateMessageStructure(event.messageId, { liked: event.isLiked });
             } else {
                 handleTypingEvent(event);
             }
@@ -43,13 +93,13 @@ export const useChat = (
                 addMessage(msg);
             }
 
-            queryClient.invalidateQueries({queryKey: [INBOX_QUERY_KEY, currentUserId]});
+            queryClient.invalidateQueries({ queryKey: [INBOX_QUERY_KEY, currentUserId] });
         },
         [recipientId, currentUserId, addMessage, queryClient]
     );
 
-    const {connected, wsService} = useChatConnection(
-        currentUserId, {onMessage: handleMessage, onEvent: handleChatEvent}
+    const { connected, wsService } = useChatConnection(
+        currentUserId, { onMessage: handleMessage, onEvent: handleChatEvent }
     );
 
     const sendMessage = useCallback(
@@ -90,8 +140,7 @@ export const useChat = (
             };
 
             addMessage(optimisticMessage);
-            queryClient.invalidateQueries({queryKey: [INBOX_QUERY_KEY, currentUserId]}).then(() => {
-            });
+            queryClient.invalidateQueries({ queryKey: [INBOX_QUERY_KEY, currentUserId] }).then(() => {});
         },
         [currentUserId, recipientId, wsService, addMessage, queryClient]
     );
@@ -100,7 +149,7 @@ export const useChat = (
         (type: "TYPING" | "STOPPED_TYPING") => {
             if (!recipientId)
                 return;
-            wsService.current?.sendEvent({type, recipientId});
+            wsService.current?.sendEvent({ type, recipientId });
         }, [recipientId, wsService]
     );
 
@@ -122,6 +171,9 @@ export const useChat = (
         sendMessage,
         sendTypingEvent,
         toggleLikeMessage,
+        loadMoreMessages,
+        hasMoreMessages,
+        isLoadingHistory,
         otherUser: {
             firstName: historyData?.otherUserFirstName,
             lastName: historyData?.otherUserLastName,

@@ -79,7 +79,7 @@ export const DoctorsPage = () => {
                     </div>
                 )}
 
-                {isLoading && <Loader text="Loading doctors..."/>}
+                {isLoading && <Loader/>}
                 {isError && <p className="error-text">Error loading doctors. Please try again later.</p>}
 
                 <div className={`doctors-grid ${isPlaceholderData ? 'loading' : ''}`}>

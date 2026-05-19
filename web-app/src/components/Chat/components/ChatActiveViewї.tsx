@@ -19,7 +19,16 @@ export const ChatActiveView = ({
                                    onBack
                                }: ChatActiveViewProps) => {
     const {
-        messages, isTyping, connected, sendMessage, sendTypingEvent, toggleLikeMessage, otherUser
+        messages,
+        isTyping,
+        connected,
+        sendMessage,
+        sendTypingEvent,
+        toggleLikeMessage,
+        otherUser,
+        loadMoreMessages,
+        hasMoreMessages,
+        isLoadingHistory
     } = useChat(currentUserId, user.id);
 
     const [replyingTo, setReplyingTo] = useState<ChatMessage | null>(null);
@@ -58,6 +67,9 @@ export const ChatActiveView = ({
                 onLikeMessage={toggleLikeMessage}
                 onReplyMessage={setReplyingTo}
                 otherUser={displayUser}
+                onLoadMore={loadMoreMessages}
+                hasMore={hasMoreMessages ?? false}
+                isLoadingMore={isLoadingHistory ?? false}
             />
 
             <ChatInput

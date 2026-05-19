@@ -10,7 +10,7 @@ chat:
   bucket:
     size: 50
   pagination:
-    buckets-per-page: 2
+    buckets-per-page: 1
 
 security:
   jwt:
