@@ -39,6 +39,23 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         message.setTimestamp(LocalDateTime.now());
         message.setStatus(MessageStatus.RECEIVED);
 
+        if (request.getReplyToMessageId() != null && !request.getReplyToMessageId().isBlank()) {
+            message.setReplyToMessageId(request.getReplyToMessageId());
+            chatBucketRepository.findByMessagesId(request.getReplyToMessageId())
+                    .flatMap(bucket -> bucket.getMessages().stream()
+                            .filter(msg -> msg.getId().equals(request.getReplyToMessageId()))
+                            .findFirst())
+                    .ifPresent(originalMsg -> {
+                        String preview = originalMsg.getContent();
+                        if (preview != null && preview.length() > 60) {
+                            preview = preview.substring(0, 57) + "...";
+                        }
+                        message.setReplyPreview(preview);
+
+                        message.setReplySenderName("ID: " + originalMsg.getSenderId());
+                    });
+        }
+
         ChatBucket latestBucket = chatBucketRepository
                 .findFirstByChatIdOrderByEndDateDesc(chatId)
                 .orElse(null);
@@ -47,7 +64,6 @@ public class ChatMessageServiceImpl implements ChatMessageService {
             latestBucket.getMessages().add(message);
             latestBucket.setCount(latestBucket.getCount() + 1);
             latestBucket.setEndDate(message.getTimestamp());
-
             chatBucketRepository.save(latestBucket);
         } else {
             ChatBucket newBucket = new ChatBucket();

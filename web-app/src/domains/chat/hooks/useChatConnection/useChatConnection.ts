@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import type { ChatEvent, ChatMessage } from "../../types.ts";
-import { ChatWsService } from "../../services/chatWsService.ts";
+import {useEffect, useRef, useState} from "react";
+import type {ChatEvent, ChatMessage} from "../../types.ts";
+import {ChatWsService} from "../../services/chatWsService.ts";
 
 interface UseChatConnectionHandlers {
     onMessage?: (msg: ChatMessage) => void;
@@ -31,9 +31,11 @@ export const useChatConnection = (
 
             onDisconnect: () => setConnected(false),
 
-            onMessage: handlers.onMessage ?? (() => {}),
+            onMessage: handlers.onMessage ?? (() => {
+            }),
 
-            onEvent: handlers.onEvent ?? (() => {})
+            onEvent: handlers.onEvent ?? (() => {
+            })
         });
 
         return () => {

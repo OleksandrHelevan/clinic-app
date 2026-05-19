@@ -1,8 +1,4 @@
-import {
-    useCallback,
-    useState
-} from "react";
-
+import {useCallback, useState} from "react";
 import type {ChatEvent} from "../../types.ts";
 
 export const useTypingIndicator = (
@@ -12,24 +8,14 @@ export const useTypingIndicator = (
 
     const handleTypingEvent = useCallback(
         (event: ChatEvent) => {
-            if (
-                recipientId &&
-                event.senderId !== recipientId
-            ) {
+            if (recipientId && event.senderId !== recipientId) {
                 return;
             }
-            if (event.type === "TYPING") {
+            if (event.type === "TYPING")
                 setIsTyping(true);
-            }
-            if (event.type === "STOPPED_TYPING") {
+            if (event.type === "STOPPED_TYPING")
                 setIsTyping(false);
-            }
-        },
-        [recipientId]
-    );
+        }, [recipientId]);
 
-    return {
-        isTyping,
-        handleTypingEvent
-    };
+    return {isTyping, handleTypingEvent};
 };

@@ -1,14 +1,12 @@
 package com.clinicapp.chatservice.application.dto;
 
 import com.clinicapp.chatservice.domains.message.MessageStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +17,10 @@ public class ChatMessageDto {
     private String content;
     private LocalDateTime timestamp;
     private MessageStatus status;
+
+    private String replyToMessageId;
+    private String replyPreview;
+    private String replySenderName;
 
     @Builder.Default
     private boolean isLiked = false;

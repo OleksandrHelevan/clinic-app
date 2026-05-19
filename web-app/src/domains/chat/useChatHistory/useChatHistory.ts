@@ -1,19 +1,18 @@
 import {useQuery} from "@tanstack/react-query";
 import {chatService} from "../services/chatService.ts";
-import type {ChatMessage} from "../types.ts";
+import type {GetHistoryResponse} from "../types.ts";
 
 export const useChatHistory = (
     currentUserId: string,
     recipientId?: string
 ) => {
-    return useQuery<ChatMessage[]>({
+    return useQuery<GetHistoryResponse>({
         queryKey: [
             "chat-history",
             currentUserId,
             recipientId
         ],
         enabled: !!currentUserId && !!recipientId,
-        initialData: [],
         queryFn: async () => {
             const data = await chatService.getHistory(
                 currentUserId,

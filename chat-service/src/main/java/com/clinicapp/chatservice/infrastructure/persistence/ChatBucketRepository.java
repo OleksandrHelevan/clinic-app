@@ -20,12 +20,11 @@ public interface ChatBucketRepository extends MongoRepository<ChatBucket, String
     Optional<ChatBucket> findFirstByChatIdOrderByEndDateDesc(String chatId);
 
     @Query("{ 'messages.id': ?0 }")
-    @Update("{ '$set': { 'messages.$.status': ?1 } }")
-    long updateMessageStatus(String messageId, MessageStatus status);
+    Optional<ChatBucket> findByMessagesId(String messageId);
 
     @Query("{ 'messages.id': ?0 }")
-    @Update("{ '$set': { 'messages.$.isLiked': ?1 } }")
-    long updateMessageLikeStatus(String messageId, boolean isLiked);
+    @Update("{ '$set': { 'messages.$.status': ?1 } }")
+    long updateMessageStatus(String messageId, MessageStatus status);
 
     @Aggregation(pipeline = {
             "{ $match: { $or: [ { 'messages.senderId': ?0 }, { 'messages.recipientId': ?0 } ] } }",

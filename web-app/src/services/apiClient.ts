@@ -30,7 +30,7 @@ async function request<T>(endpoint: string, method: string, options: RequestOpti
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
         } else {
-            console.warn(`[apiClient] Спроба зробити запит на ${endpoint} без токена`);
+            console.warn(`[apiClient] Try to ${endpoint} without token`);
         }
     }
 
@@ -47,7 +47,7 @@ async function request<T>(endpoint: string, method: string, options: RequestOpti
 
     if (!response.ok) {
        if (response.status === 401) {
-            console.error("Токен недійсний або прострочений");
+            console.error("Token is wrong or expired");
         }
 
         const errorData = (await response.json().catch(() => ({}))) as { message?: string };

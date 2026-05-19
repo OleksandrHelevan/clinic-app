@@ -21,5 +21,11 @@ public class ChatMessage {
     private String content;
     private LocalDateTime timestamp;
     private MessageStatus status;
+
+    private String replyToMessageId;
+    private String replyPreview;
+    private String replySenderName;
+
+    @Builder.Default
     private boolean isLiked = false;
 }

@@ -11,7 +11,6 @@ export default function SignUpPage() {
     const {mutate} = useSignUp()
 
     const onSubmit = (data: SignUpRequest) => {
-        console.log(data)
         mutate(data)
     };
     return (

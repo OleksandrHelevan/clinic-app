@@ -94,6 +94,7 @@
 .chat-bubble-wrapper {
     display: flex;
     width: 100%;
+    position: relative;
 }
 
 .chat-bubble-wrapper.sent {
@@ -105,12 +106,17 @@
 }
 
 .chat-bubble {
-    padding: 10px 16px;
+    padding: 10px 14px;
     border-radius: 18px;
-    max-width: 80%;
+    max-width: 75%;
     font-size: 0.95rem;
     line-height: 1.4;
     word-break: break-word;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    position: relative;
 }
 
 .chat-bubble.sent {
@@ -124,13 +130,121 @@
     color: var(--text-body);
     border: 1px solid var(--border-subtle);
     border-bottom-left-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.chat-message-actions {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 10;
+}
+
+.chat-bubble-wrapper.sent .chat-message-actions {
+    left: -68px;
+    flex-direction: row;
+}
+
+.chat-bubble-wrapper.received .chat-message-actions {
+    right: -68px;
+    flex-direction: row-reverse;
+}
+
+.chat-reply-btn {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.chat-bubble-wrapper:hover .chat-reply-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.chat-like-btn {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.chat-bubble-wrapper:hover .chat-like-btn,
+.chat-like-btn.liked {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.chat-like-btn, .chat-reply-btn {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 50% !important;
+    width: 26px !important;
+    height: 26px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer;
+    color: #8e8e93;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 0 !important;
+    margin: 0 !important;
+    outline: none;
+}
+
+.chat-like-btn:hover, .chat-reply-btn:hover {
+    transform: scale(1.1);
+    color: var(--text-body);
+    background-color: var(--bg-main) !important;
+}
+
+.chat-like-btn.liked {
+    color: #ef5350 !important;
+    border-color: #fca5a5 !important;
+    background: #ffebee !important;
+}
+
+.chat-like-btn svg, .chat-reply-btn svg {
+    display: block;
+    width: 14px;
+    height: 14px;
+}
+
+.chat-message-reply-preview {
+    background: rgba(0, 0, 0, 0.06);
+    border-left: 3px solid #007bff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    max-width: 100%;
+    margin-bottom: 2px;
+}
+
+.chat-bubble.sent .chat-message-reply-preview {
+    background: rgba(255, 255, 255, 0.18);
+    border-left-color: #ffffff;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.reply-sender {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 1px;
+}
+
+.reply-text {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-message-content {
+    font-size: 0.95rem;
 }
 
 .chat-footer {
     padding: 16px;
     background-color: var(--bg-surface);
-    border-top: 1px solid var(--border-subtle);
     display: flex;
     gap: 12px;
     align-items: center;
@@ -179,17 +293,6 @@
     background: var(--border-strong);
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .typing-indicator-wrapper {
     animation: slideIn 0.3s ease-out;
 }
@@ -224,29 +327,6 @@
     animation-delay: 0.4s;
 }
 
-@keyframes blink {
-    0% {
-        opacity: .2;
-    }
-    20% {
-        opacity: 1;
-    }
-    100% {
-        opacity: .2;
-    }
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateY(10px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
 .chat-inbox-popup {
     width: 320px;
     background-color: #ffffff;
@@ -254,7 +334,7 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Щоб контент не вилазив за закруглені кути */
+    overflow: hidden;
     border: 1px solid #e5e7eb;
 }
 
@@ -324,4 +404,108 @@
 
 .inbox-text {
     color: #6b7280;
+}
+
+.chat-footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.chat-reply-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f4f5f9;
+    border-left: 4px solid #007bff;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border-subtle);
+    animation: slideUpFast 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chat-reply-bar-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.chat-reply-bar-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #007bff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+}
+
+.chat-reply-bar-text {
+    margin: 2px 0 0 0;
+    font-size: 13px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-reply-bar-close {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+    margin-left: 8px;
+}
+
+.chat-reply-bar-close:hover {
+    color: #333;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUpFast {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: .2;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: .2;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

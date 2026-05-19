@@ -11,7 +11,7 @@ interface ChatHeaderProps {
     onBack?: () => void;
 }
 
-export const ChatHeader = ({ user, connected, onClose, onBack }: ChatHeaderProps) => (
+export const ChatHeader = ({ user, onClose, onBack }: ChatHeaderProps) => (
     <header className="chat-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {onBack && (
@@ -30,10 +30,6 @@ export const ChatHeader = ({ user, connected, onClose, onBack }: ChatHeaderProps
                 <span className="chat-header-title">
                     {user.firstName} {user.lastName}
                 </span>
-                <div className="chat-header-status">
-                    <span className={`status-indicator ${connected ? 'online' : 'offline'}`}></span>
-                    {connected ? 'Online' : 'Offline'}
-                </div>
             </div>
         </div>
 

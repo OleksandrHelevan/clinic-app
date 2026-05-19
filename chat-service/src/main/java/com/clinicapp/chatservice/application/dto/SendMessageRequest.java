@@ -18,4 +18,5 @@ public class SendMessageRequest {
 
     @NotBlank(message = "Content cannot be empty")
     private String content;
+    private String replyToMessageId;
 }

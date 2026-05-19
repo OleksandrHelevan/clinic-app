@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useChat } from "../../../domains/chat/useChat/useChat.ts";
 import { ChatHeader, type ChatUser } from "./ChatHeader.tsx";
 import { ChatMessages } from "./ChatMessages.tsx";
 import { ChatInput } from "./ChatInput.tsx";
+import type { ChatMessage } from "../../../domains/chat/types";
 
 interface ChatActiveViewProps {
     user: ChatUser;
@@ -16,25 +18,54 @@ export const ChatActiveView = ({
                                    onClose,
                                    onBack
                                }: ChatActiveViewProps) => {
-    const { messages, isTyping, connected, sendMessage, sendTypingEvent } = useChat(currentUserId, user.id);
+    const {
+        messages, isTyping, connected, sendMessage, sendTypingEvent, toggleLikeMessage, otherUser
+    } = useChat(currentUserId, user.id);
+
+    const [replyingTo, setReplyingTo] = useState<ChatMessage | null>(null);
+
+    const displayUser: ChatUser = {
+        id: user.id,
+        firstName: otherUser?.firstName || user.firstName,
+        lastName: otherUser?.lastName || user.lastName
+    };
+
+    const handleSendMessage = (content: string) => {
+        if (replyingTo) {
+            const isMe = replyingTo.senderId === currentUserId;
+            const replySenderName = isMe ? "Ви" : `${displayUser.firstName} ${displayUser.lastName}`;
+            sendMessage(content, replyingTo.id, replyingTo.content, replySenderName);
+
+            setReplyingTo(null);
+        } else {
+            sendMessage(content);
+        }
+    };
 
     return (
         <>
             <ChatHeader
-                user={user}
+                user={displayUser}
                 connected={connected}
                 onClose={onClose}
                 onBack={onBack}
             />
+
             <ChatMessages
                 messages={messages}
                 currentUserId={currentUserId}
                 isTyping={isTyping}
+                onLikeMessage={toggleLikeMessage}
+                onReplyMessage={setReplyingTo}
+                otherUser={displayUser}
             />
+
             <ChatInput
-                onSendMessage={sendMessage}
+                onSendMessage={handleSendMessage}
                 onTyping={sendTypingEvent}
-                placeholder={isTyping ? `${user.firstName} typing...` : "Enter message..."}
+                placeholder={isTyping ? `${displayUser.firstName} typing...` : "Enter message..."}
+                replyingTo={replyingTo}
+                onCancelReply={() => setReplyingTo(null)}
             />
         </>
     );

@@ -21,3 +21,10 @@ eureka:
   client:
     service-url:
       defaultZone: http://discovery-service:8761/eureka/
+
+
+services:
+  doctor-service:
+    url: http://doctor-service:8083
+  patient-service:
+    url: http://patient-service:8082

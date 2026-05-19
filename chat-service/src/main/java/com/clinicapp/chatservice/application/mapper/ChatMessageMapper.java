@@ -18,6 +18,6 @@ public interface ChatMessageMapper {
     @Mapping(target = "isLiked", ignore = true)
     ChatMessage toEntity(SendMessageRequest request);
 
-    @Mapping(target = "isLiked", ignore = true)
+    @Mapping(source = "liked", target = "isLiked")
     ChatMessageDto toDto(ChatMessage message);
 }

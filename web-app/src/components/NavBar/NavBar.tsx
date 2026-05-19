@@ -23,10 +23,7 @@ export function NavBar({ isAuthenticated = false }: NavBarProps) {
                 </div>
 
                 <ul className="navbar-links">
-                    <li><NavLink to="/dashboard">Dashboard</NavLink></li>
-                    <li><NavLink to="/appointments">Appointments</NavLink></li>
                     <li><NavLink to={DOCTORS_PATH}>Doctors</NavLink></li>
-                    <li><NavLink to="/records">Records</NavLink></li>
                 </ul>
 
                 <div className="navbar-right">

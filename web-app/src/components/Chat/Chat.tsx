@@ -21,13 +21,9 @@ export const Chat = ({ user, onClose, currentUserId }: ChatProps) => {
         setSelectedUser(undefined);
     };
 
-    const handleSelectFromInbox = (id: string) => {
+    const handleSelectFromInbox = (chatUser: ChatUser) => {
         setShowInboxManually(false);
-        setSelectedUser({
-            id,
-            firstName: "User",
-            lastName: id
-        });
+        setSelectedUser(chatUser);
     };
 
     return (

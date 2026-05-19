@@ -1,6 +1,7 @@
 package com.clinicapp.chatservice.api;
 
-import com.clinicapp.chatservice.application.dto.ChatMessageDto;
+import com.clinicapp.chatservice.application.dto.ChatHistoryResponse;
+import com.clinicapp.chatservice.application.dto.ChatInboxItem;
 import com.clinicapp.chatservice.application.service.ChatHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +17,19 @@ public class ChatHistoryController {
     private final ChatHistoryService chatHistoryService;
 
     @GetMapping("/history/{senderId}/{recipientId}")
-    public ResponseEntity<List<ChatMessageDto>> getChatHistory(
+    public ResponseEntity<ChatHistoryResponse> getChatHistory(
             @PathVariable String senderId,
             @PathVariable String recipientId,
             @RequestParam(defaultValue = "0") int page) {
 
-        List<ChatMessageDto> response = chatHistoryService
+        ChatHistoryResponse response = chatHistoryService
                 .getChatHistory(senderId, recipientId, page);
 
         return ResponseEntity.ok(response);
     }
+
     @GetMapping("/inbox/{userId}")
-    public ResponseEntity<List<ChatMessageDto>> getInbox(@PathVariable String userId) {
+    public ResponseEntity<List<ChatInboxItem>> getInbox(@PathVariable String userId) {
         return ResponseEntity.ok(chatHistoryService.getUserInbox(userId));
     }
 }
