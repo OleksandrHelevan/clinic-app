@@ -31,6 +31,7 @@ export const ChatMessages = ({
     const containerRef = useRef<HTMLDivElement>(null);
     const prevScrollHeightRef = useRef<number>(0);
     const shouldRestoreScrollRef = useRef<boolean>(false);
+    const prevMessagesLengthRef = useRef<number>(0);
 
     const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
         messagesEndRef.current?.scrollIntoView({ behavior });
@@ -43,17 +44,34 @@ export const ChatMessages = ({
             const { scrollHeight } = containerRef.current;
             containerRef.current.scrollTop = scrollHeight - prevScrollHeightRef.current;
             shouldRestoreScrollRef.current = false;
-        } else {
-            const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-            const isAtBottom = scrollHeight - scrollTop <= clientHeight + 150;
-            const lastMessage = messages[messages.length - 1];
-            const isMyMessage = lastMessage?.senderId === currentUserId;
-
-            if (isAtBottom || isMyMessage || messages.length <= 50) {
-                scrollToBottom(messages.length <= 50 ? "auto" : "smooth");
-            }
+            prevMessagesLengthRef.current = messages.length;
+            return;
         }
-    }, [messages, isTyping, currentUserId]);
+
+        if (messages.length === prevMessagesLengthRef.current) return;
+
+        const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+        const isAtBottom = scrollHeight - scrollTop <= clientHeight + 150;
+        const lastMessage = messages[messages.length - 1];
+        const isMyMessage = lastMessage?.senderId === currentUserId;
+
+        if (isAtBottom || isMyMessage || messages.length <= 50) {
+            scrollToBottom(messages.length <= 50 ? "auto" : "smooth");
+        }
+
+        prevMessagesLengthRef.current = messages.length;
+    }, [messages, currentUserId]);
+
+    useLayoutEffect(() => {
+        if (!containerRef.current || !isTyping) return;
+
+        const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+        const isAtBottom = scrollHeight - scrollTop <= clientHeight + 150;
+
+        if (isAtBottom) {
+            scrollToBottom("smooth");
+        }
+    }, [isTyping]);
 
     const handleScroll = () => {
         if (!containerRef.current || !hasMore || isLoadingMore) return;
