@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { ChatUser } from "./ChatHeader.tsx";
+import type { ChatUser } from "../components/ChatHeader.tsx";
 
 export interface ChatContextType {
     isOpen: boolean;

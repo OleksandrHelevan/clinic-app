@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import type { ChatUser } from "./ChatHeader.tsx";
+import type { ChatUser } from "../components/ChatHeader.tsx";
 import { Chat } from "../Chat.tsx";
 import { ChatContext } from "./ChatContext.tsx";
 

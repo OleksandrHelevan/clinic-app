@@ -4,7 +4,7 @@ import { Avatar } from "../../assets/Avatar.tsx";
 import "./NavBar.css";
 import { ChatIcon } from "../../assets/ChatIcon.tsx";
 import { DOCTORS_PATH, LOGIN_PATH, ME_PATH } from "../../constants/paths.ts";
-import {useChatGlobal} from "../Chat/components/ChatContext.tsx"; // Перевірте правильність шляху до компонента Chat
+import {useChatGlobal} from "../Chat/context/ChatContext.tsx"; // Перевірте правильність шляху до компонента Chat
 
 interface NavBarProps {
     isAuthenticated?: boolean;

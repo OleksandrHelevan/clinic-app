@@ -1,6 +1,6 @@
 import {useInbox} from "../../../domains/chat/useInbox/useInbox.ts";
-import type {ChatUser} from "./ChatHeader";
-import {Loader} from "../../Loader/Loader";
+import type {ChatUser} from "../components/ChatHeader.tsx";
+import {Loader} from "../../Loader/Loader.tsx";
 
 interface ChatInboxViewProps {
     currentUserId: string;

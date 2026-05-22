@@ -6,7 +6,7 @@ import {getFromStorage} from "../../utils/localStorageUtil.ts";
 import {Loader} from "../../components/Loader/Loader.tsx";
 import './DoctorsPage.css';
 import {useState} from "react";
-import {useChatGlobal} from "../../components/Chat/components/ChatContext.tsx";
+import {useChatGlobal} from "../../components/Chat/context/ChatContext.tsx";
 
 export const DoctorsPage = () => {
     const [selectedSpec, setSelectedSpec] = useState<Specialization | undefined>(undefined);

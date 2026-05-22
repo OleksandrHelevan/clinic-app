@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { type ChatUser } from "./components/ChatHeader.tsx";
-import { ChatInboxView } from "./components/ChatInboxView.tsx";
+import { ChatInboxView } from "./view/ChatInboxView.tsx";
 import './Chat.css';
-import {ChatActiveView} from "./components/ChatActiveViewї.tsx";
+import {ChatActiveView} from "./view/ChatActiveView.tsx";
 
 interface ChatProps {
     user?: ChatUser;
