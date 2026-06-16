@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -27,7 +27,7 @@ public class Doctor {
     private String lastName;
 
     @Indexed
-    private Specialization specialization;
+    private com.clinicapp.common.dto.Specialization specialization;
 
     @Indexed(unique = true)
     private String email;
@@ -35,11 +35,14 @@ public class Doctor {
     @Indexed
     private String phone;
 
+    @Field("avatar_url")
+    private String avatarUrl;
+
     @CreatedDate
-    private OffsetDateTime createdAt;
+    private Instant createdAt;
 
     @LastModifiedDate
-    private OffsetDateTime updatedAt;
+    private Instant updatedAt;
 
     @Builder.Default
     private boolean deleted = false;

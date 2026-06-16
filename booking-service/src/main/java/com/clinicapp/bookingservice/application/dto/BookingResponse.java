@@ -15,8 +15,7 @@ public record BookingResponse(
         String description,
         BookingStatus status,
         OffsetDateTime createdAt,
-        OffsetDateTime updatedAt,
-        boolean deleted
+        OffsetDateTime updatedAt
 
 ) {
 }

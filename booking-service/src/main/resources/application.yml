@@ -4,19 +4,11 @@ spring:
   mongodb:
     uri: ${SPRING_DATA_MONGODB_URI}
     database: ${SPRING_DATA_MONGODB_NAME}
-server:
-  forward-headers-strategy: framework
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
-    fetch-registry: true
-    register-with-eureka: true
-  instance:
-    prefer-ip-address: true
 
-springdoc:
-  swagger-ui:
-    enabled: false
-  api-docs:
-    enabled: true
+server:
+  port: ${SERVER_PORT:8084}
+
+clinic:
+  services:
+    doctor-service-url: ${DOCTOR_SERVICE_URL:http://doctor-service}
+    patient-service-url: ${PATIENT_SERVICE_URL:http://patient-service}

@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: chat-service
+  data:
+    redis:
+      host: redis
+      port: 6379
+
+chat:
+  bucket:
+    size: 50
+  pagination:
+    buckets-per-page: 1
+
+security:
+  jwt:
+    expiration: 86400005
+    secret-key: '87874be75cf3f44a75fac959d65be8d9955b22b90f60d36c4e64b3d85074185263b7778e369105e38068a20652b5c2d830861b05720bbba62ade887d349082bdec33d847095d756f47c441e217a7969b10b7d0288c3a2d84e840115b892cf893'
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/
+
+
+services:
+  doctor-service:
+    url: http://doctor-service:8083
+  patient-service:
+    url: http://patient-service:8082

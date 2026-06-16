@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: booking-service
+
+server:
+  forward-headers-strategy: framework
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/

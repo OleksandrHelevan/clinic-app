@@ -1,8 +1,8 @@
 package com.clinicapp.chatservice.api;
 
-import com.clinicapp.chatservice.application.service.ChatMessageService;
-import com.clinicapp.chatservice.application.service.ChatRoomService;
-import com.clinicapp.chatservice.domains.message.ChatMessage;
+import com.clinicapp.chatservice.application.dto.ChatHistoryResponse;
+import com.clinicapp.chatservice.application.dto.ChatInboxItem;
+import com.clinicapp.chatservice.application.service.ChatHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,24 +14,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatHistoryController {
 
-    private final ChatMessageService chatMessageService;
-    private final ChatRoomService chatRoomService;
+    private final ChatHistoryService chatHistoryService;
 
     @GetMapping("/history/{senderId}/{recipientId}")
-    public ResponseEntity<List<ChatMessage>> getChatHistory(
+    public ResponseEntity<ChatHistoryResponse> getChatHistory(
             @PathVariable String senderId,
             @PathVariable String recipientId,
             @RequestParam(defaultValue = "0") int page) {
 
-        String chatId = chatRoomService.getChatId(senderId, recipientId, false)
-                .orElse(null);
+        ChatHistoryResponse response = chatHistoryService
+                .getChatHistory(senderId, recipientId, page);
 
-        if (chatId == null) {
-            return ResponseEntity.ok(List.of());
-        }
+        return ResponseEntity.ok(response);
+    }
 
-        List<ChatMessage> history = chatMessageService.getChatHistory(chatId, page);
-
-        return ResponseEntity.ok(history);
+    @GetMapping("/inbox/{userId}")
+    public ResponseEntity<List<ChatInboxItem>> getInbox(@PathVariable String userId) {
+        return ResponseEntity.ok(chatHistoryService.getUserInbox(userId));
     }
 }

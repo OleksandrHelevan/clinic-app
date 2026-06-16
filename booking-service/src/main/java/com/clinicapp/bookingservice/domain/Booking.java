@@ -9,8 +9,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.OffsetDateTime;
-import java.util.UUID;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -18,9 +17,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Document(collection = "bookings")
 @CompoundIndex(
-        name = "doctor_time_unique_idx",
+        name = "doctor_time_active_unique_idx",
         def = "{'doctorId': 1, 'bookedTime': 1}",
-        unique = true
+        unique = true,
+        partialFilter = "{'deleted': false, 'status': {'$in': ['PENDING', 'CONFIRMED']}}"
 )
 public class Booking {
 
@@ -31,12 +31,12 @@ public class Booking {
     @Indexed
     private String patientId;
     @Indexed
-    private OffsetDateTime bookedTime;
+    private Instant bookedTime;
 
     @CreatedDate
-    private OffsetDateTime createdAt;
+    private Instant createdAt;
     @LastModifiedDate
-    private OffsetDateTime updatedAt;
+    private Instant updatedAt;
     private String description;
     private BookingStatus status;
     @Version

@@ -1,29 +1,26 @@
 services:
-  gateway-service:
+
+  config-service:
     build:
       context: .
-      dockerfile: gateway-service/Dockerfile
-    container_name: gateway-service
+      dockerfile: config-service/Dockerfile
+    container_name: config-service
     ports:
-      - "${GATEWAY_SERVICE_PORT}:${GATEWAY_SERVICE_PORT}"
+      - "8888:8888"
     environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-      SERVER_PORT: ${GATEWAY_SERVICE_PORT}
-      TOKEN_SECRET_KEY: ${TOKEN_SECRET_KEY}
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
-    depends_on:
-      discovery-service:
-        condition: service_healthy
-      patient-service:
-        condition: service_started
-      doctor-service:
-        condition: service_started
-      booking-service:
-        condition: service_started
-      auth-service:
-        condition: service_started
+      SERVER_PORT: 8888
+      ENCRYPT_KEY: ${ENCRYPT_KEY}
+      SPRING_PROFILES_ACTIVE: native
+    volumes:
+      - ./config-service/src/main/resources/config-repo:/config-repo
     networks:
       - clinic-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   discovery-service:
     build:
@@ -35,35 +32,20 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       SERVER_PORT: ${DISCOVERY_SERVICE_PORT}
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
     networks:
       - clinic-network
+    depends_on:
+      config-service:
+        condition: service_healthy
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:${DISCOVERY_SERVICE_PORT}/actuator/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:${DISCOVERY_SERVICE_PORT}/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 15s
 
-  patient-service:
-    build:
-      context: .
-      dockerfile: patient-service/Dockerfile
-    container_name: patient-service
-    ports:
-      - "${PATIENT_SERVICE_PORT}:${PATIENT_SERVICE_PORT}"
-    environment:
-      SERVER_PORT: ${PATIENT_SERVICE_PORT}
-      SPRING_DATA_MONGODB_URI: ${MONGO_URI}
-      SPRING_DATA_MONGODB_NAME: ${PATIENT_DATA_MONGODB_NAME}
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
-    networks:
-      - clinic-network
-    depends_on:
-      discovery-service:
-        condition: service_healthy
-
   auth-service:
+    profiles: ["dev"]
     build:
       context: .
       dockerfile: auth-service/Dockerfile
@@ -71,19 +53,41 @@ services:
     ports:
       - "${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}"
     environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       SERVER_PORT: ${AUTH_SERVICE_PORT}
       SPRING_DATA_MONGODB_URI: ${MONGO_URI}
       SPRING_DATA_MONGODB_NAME: ${AUTH_DATA_MONGODB_NAME}
-      TOKEN_SECRET_KEY: ${TOKEN_SECRET_KEY}
-      TOKEN_EXPIRATION: ${TOKEN_EXPIRATION}
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
     networks:
       - clinic-network
     depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+
+  patient-service:
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: patient-service/Dockerfile
+    container_name: patient-service
+    ports:
+      - "${PATIENT_SERVICE_PORT}:${PATIENT_SERVICE_PORT}"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SERVER_PORT: ${PATIENT_SERVICE_PORT}
+      SPRING_DATA_MONGODB_URI: ${MONGO_URI}
+      SPRING_DATA_MONGODB_NAME: ${PATIENT_DATA_MONGODB_NAME}
+    networks:
+      - clinic-network
+    depends_on:
+      config-service:
+        condition: service_healthy
       discovery-service:
         condition: service_healthy
 
   doctor-service:
+    profiles: ["dev"]
     build:
       context: .
       dockerfile: doctor-service/Dockerfile
@@ -91,17 +95,20 @@ services:
     ports:
       - "${DOCTOR_SERVICE_PORT}:${DOCTOR_SERVICE_PORT}"
     environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       SERVER_PORT: ${DOCTOR_SERVICE_PORT}
       SPRING_DATA_MONGODB_URI: ${MONGO_URI}
       SPRING_DATA_MONGODB_NAME: ${DOCTOR_DATA_MONGODB_NAME}
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
     networks:
       - clinic-network
     depends_on:
+      config-service:
+        condition: service_healthy
       discovery-service:
         condition: service_healthy
 
   booking-service:
+    profiles: ["dev"]
     build:
       context: .
       dockerfile: booking-service/Dockerfile
@@ -109,14 +116,54 @@ services:
     ports:
       - "${BOOKING_SERVICE_PORT}:${BOOKING_SERVICE_PORT}"
     environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       SERVER_PORT: ${BOOKING_SERVICE_PORT}
       SPRING_DATA_MONGODB_URI: ${MONGO_URI}
       SPRING_DATA_MONGODB_NAME: ${BOOKING_DATA_MONGODB_NAME}
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
+    networks:
+      - clinic-network
+    depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+
+  gateway-service:
+    build:
+      context: .
+      dockerfile: gateway-service/Dockerfile
+    container_name: gateway-service
+    ports:
+      - "${GATEWAY_SERVICE_PORT}:${GATEWAY_SERVICE_PORT}"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SERVER_PORT: ${GATEWAY_SERVICE_PORT}
     networks:
       - clinic-network
     depends_on:
       discovery-service:
+        condition: service_healthy
+
+  chat-service:
+    build:
+      context: .
+      dockerfile: chat-service/Dockerfile
+    container_name: chat-service
+    ports:
+      - "${CHAT_SERVICE_PORT}:${CHAT_SERVICE_PORT}"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SERVER_PORT: ${CHAT_SERVICE_PORT}
+      SPRING_DATA_MONGODB_URI: ${MONGO_URI}
+      SPRING_DATA_MONGODB_NAME: ${CHAT_DATA_MONGODB_NAME}
+    networks:
+      - clinic-network
+    depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
   kafka:
@@ -159,30 +206,54 @@ services:
       timeout: 3s
       retries: 5
 
-  chat-service:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - clinic-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    networks:
+      - clinic-network
+
+  ai-service:
+    profiles: [ "dev" ]
     build:
       context: .
-      dockerfile: chat-service/Dockerfile
-    container_name: chat-service
+      dockerfile: ai-service/Dockerfile
+    container_name: ai-service
     ports:
-      - "${CHAT_SERVICE_PORT}:${CHAT_SERVICE_PORT}"
+      - "${AI_SERVICE_PORT}:${AI_SERVICE_PORT}"
     environment:
-      SERVER_PORT: ${CHAT_SERVICE_PORT}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SERVER_PORT: ${AI_SERVICE_PORT}
       SPRING_DATA_MONGODB_URI: ${MONGO_URI}
-      SPRING_DATA_MONGODB_NAME: ${CHAT_DATA_MONGODB_NAME}
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
-      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE}
+      SPRING_DATA_MONGODB_NAME: ${AI_DATA_MONGODB_NAME}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
     networks:
       - clinic-network
     depends_on:
-      discovery-service:
+      config-service:
         condition: service_healthy
-      redis:
+      discovery-service:
         condition: service_healthy
 
 networks:
   clinic-network:
     driver: bridge
+
 volumes:
   kafka-data:

@@ -1,15 +1,35 @@
-import {Outlet} from 'react-router-dom'
-import './RootLayout.css'
+import { Outlet } from 'react-router-dom';
+import { NavBar } from '../../components/NavBar/NavBar';
+import { ChatProvider } from '../../components/Chat/context/ChatProvider';
+import AnimatedBackground from '../../components/AnimatedBackground/AnimatedBackground';
+import {
+  AeroViewport,
+  AppHeader,
+  MainContainer,
+  PageShell,
+} from '../../styles/layout.styles';
 
 export default function RootLayout() {
-    return (
-        <div className="wrapper">
-        <header className="header">
+  const userId = localStorage.getItem('userId') || '';
 
-        </header>
-            <main className="main-container">
-                <Outlet/>
-            </main>
-        </div>
-    )
+  return (
+    <AeroViewport>
+      <AnimatedBackground />
+
+      <ChatProvider currentUserId={userId}>
+        <PageShell>
+          <AppHeader>
+            <NavBar
+              isAuthenticated={Boolean(userId.trim())}
+              currentUserId={userId}
+            />
+          </AppHeader>
+
+          <MainContainer>
+            <Outlet />
+          </MainContainer>
+        </PageShell>
+      </ChatProvider>
+    </AeroViewport>
+  );
 }

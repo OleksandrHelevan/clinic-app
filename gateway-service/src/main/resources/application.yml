@@ -1,38 +1,5 @@
-server:
-  port: ${SERVER_PORT}
-
 spring:
   application:
     name: gateway-service
-  cloud:
-    loadbalancer:
-      cache:
-        enabled: false
-
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE:http://localhost:8761/eureka/}
-    fetch-registry: true
-    register-with-eureka: true
-    registry-fetch-interval-seconds: 5
-  instance:
-    prefer-ip-address: true
-
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: true
-    config-url: /v3/api-docs/swagger-config
-    urls:
-      - name: Gateway Service
-        url: /v3/api-docs
-      - name: Auth Service
-        url: /auth-docs/v3/api-docs
-      - name: Patient Service
-        url: /patient-docs/v3/api-docs
-      - name: Doctor Service
-        url: /doctor-docs/v3/api-docs
-      - name: Booking Service
-        url: /booking-docs/v3/api-docs
+server:
+  port: ${SERVER_PORT:8080}

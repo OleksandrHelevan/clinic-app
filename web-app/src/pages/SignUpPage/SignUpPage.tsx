@@ -1,89 +1,94 @@
-import {Link} from "react-router-dom";
-import type {SignUpRequest} from "../../domains/users/types.ts";
-import Form from "../../components/Form/Form.tsx";
-import Input from "../../components/TextInput/TextInput.tsx";
-import Button from "../../components/Button/Button.tsx";
-import './SignUpPage.css';
+import { Link } from 'react-router-dom';
+import type { SignUpRequest } from '../../domains/users/types';
+import Form from '../../components/Form/Form';
+import TextInput from '../../components/TextInput/TextInput';
+import Button from '../../components/Button/Button';
+import { useSignUp } from '../../domains/users/useSignUp/useSignUp';
+import { LOGIN_PATH } from '../../constants/paths';
+import {
+  BackToLogin,
+  RadioCustom,
+  RadioGroup,
+  RadioOption,
+  RadioText,
+  RoleError,
+  RoleField,
+  RoleLabel,
+  SignUpFormFooter,
+  SignUpPageRoot,
+  SignUpWrapper,
+} from './SignUpPage.styles';
 
 export default function SignUpPage() {
+  const { mutate } = useSignUp();
 
-    const onSubmit = (data: SignUpRequest) => {
-        console.log("Registration data:", data);
-    };
-    return (
-        <div className="wrapper">
-            <Form<SignUpRequest>
-                onSubmit={onSubmit}
-                title="Створити аккаунт"
-                subtitle="Приєднуйтесь до медичної платформи Avyro"
-            >
-                {({register, formState: {errors}}) => (
-                    <>
-                        <Input
-                            name="email"
-                            label="Електронна пошта"
-                            type="email"
-                            placeholder="doctor@avyro.com"
-                            rules={{
-                                required: "Введіть email",
-                                pattern: {value: /^\S+@\S+$/i, message: "Некоректний формат"}
-                            }}
-                        />
+  const onSubmit = (data: SignUpRequest) => {
+    mutate(data);
+  };
 
-                        <Input
-                            name="password"
-                            label="Пароль"
-                            type="password"
-                            placeholder="••••••••"
-                            rules={{
-                                required: "Вигадайте пароль",
-                                minLength: {value: 6, message: "Мінімум 6 символів"}
-                            }}
-                        />
-                        <div className="form-field">
-                            <label className="form-label">Ви реєструєтесь як:</label>
-                            <div className="radio-group">
-                                <label className="radio-option">
-                                    <input
-                                        type="radio"
-                                        value="PATIENT"
-                                        {...register("role", {required: "Оберіть роль"})}
-                                    />
-                                    <span className="radio-custom"></span>
-                                    <span className="radio-label">Пацієнт</span>
-                                </label>
+  return (
+      <SignUpPageRoot>
+        <SignUpWrapper>
+          <Form<SignUpRequest>
+              onSubmit={onSubmit}
+              title="Реєстрація"
+              subtitle="Доєднайся до платформи"
+              maxWidth={450}
+          >
+            {({ register, formState: { errors } }) => (
+                <>
+                  <TextInput
+                      name="email"
+                      label="Електронна пошта"
+                      type="email"
+                      placeholder="doctor@avyro.com"
+                      rules={{
+                        required: 'Введіть email',
+                        pattern: { value: /^\S+@\S+$/i, message: 'Некоректний формат' },
+                      }}
+                  />
 
-                                <label className="radio-option">
-                                    <input
-                                        type="radio"
-                                        value="DOCTOR"
-                                        {...register("role", {required: "Оберіть роль"})}
-                                    />
-                                    <span className="radio-custom"></span>
-                                    <span className="radio-label">Лікар</span>
-                                </label>
-                            </div>
-                            {errors.role && <span className="form-error">{errors.role.message as string}</span>}
-                        </div>
+                  <TextInput
+                      name="password"
+                      label="Пароль"
+                      type="password"
+                      placeholder="••••••••"
+                      rules={{
+                        required: 'Вигадайте пароль',
+                        minLength: { value: 6, message: 'Мінімум 6 символів' },
+                      }}
+                  />
 
-                        <div className="form-footer">
-                            <Button variant="primary" type="submit" className="w-full">
-                                Зареєструватись
-                            </Button>
+                  <RoleField>
+                    <RoleLabel>Ви реєструєтесь як:</RoleLabel>
+                    <RadioGroup>
+                      <RadioOption>
+                        <input type="radio" value="PATIENT" {...register('role', { required: 'Оберіть роль' })} />
+                        <RadioCustom />
+                        <RadioText>Пацієнт</RadioText>
+                      </RadioOption>
+                      <RadioOption>
+                        <input type="radio" value="DOCTOR" {...register('role', { required: 'Оберіть роль' })} />
+                        <RadioCustom />
+                        <RadioText>Лікар</RadioText>
+                      </RadioOption>
+                    </RadioGroup>
+                    {errors.role && <RoleError>{errors.role.message as string}</RoleError>}
+                  </RoleField>
 
-                            <div className="login-flow">
-                                <p>Вже маєте аккаунт?</p>
-                                <Link
-                                    className="form-link"
-                                    to={"/login"}
-                                >
-                                    Увійти
-                                </Link>
-                            </div>
-                        </div>
-                    </>
-                )}
-            </Form>
-        </div>
-    );
+                  <SignUpFormFooter>
+                    <Button variant="primary" type="submit" fullWidth>
+                      Зареєструватись
+                    </Button>
+                    <BackToLogin>
+                      <p>Вже маєте акаунт?</p>
+                      <Link to={LOGIN_PATH}>Увійти</Link>
+                    </BackToLogin>
+                  </SignUpFormFooter>
+                </>
+            )}
+          </Form>
+        </SignUpWrapper>
+      </SignUpPageRoot>
+  );
 }

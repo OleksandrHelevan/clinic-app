@@ -1,5 +1,5 @@
 import { userApiClient } from "../api/userApiClient.ts";
-import type {LoginRequest, LoginResponse, SignUpRequest, UserResponse} from "../types.ts";
+import type {LoginRequest, LoginResponse, MeResponse, SignUpRequest, UserResponse} from "../types.ts";
 
 export const userService = {
     login: async (request: LoginRequest): Promise<LoginResponse> => {
@@ -7,5 +7,9 @@ export const userService = {
     },
     signUp: async (request: SignUpRequest): Promise<UserResponse> => {
         return userApiClient.signUp(request);
+    },
+
+    me: async (): Promise<MeResponse> => {
+        return userApiClient.me();
     }
 };

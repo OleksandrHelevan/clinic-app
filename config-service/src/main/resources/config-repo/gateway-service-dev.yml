@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+security:
+  jwt:
+    secret-key: dev-secret-key-not-secure-only-for-local
+
+app:
+  rate-limit:
+    requests-per-second: 1000
+
+logging:
+  level:
+    root: INFO
+    com.clinicapp: WARN
+    org.apache.kafka: ERROR
+    org.springframework.security: WARN
+    org.springframework: WARN

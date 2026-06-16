@@ -1,20 +1,21 @@
 package com.clinicapp.bookingservice.application.service;
 
+import com.clinicapp.bookingservice.application.dto.BookingResponse;
 import com.clinicapp.bookingservice.application.dto.CreateBookingRequest;
-import com.clinicapp.bookingservice.domain.Booking;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface BookingService {
 
-    Booking create(CreateBookingRequest request);
+    BookingResponse create(CreateBookingRequest request, String userId, String role);
 
-    Booking getById(String id);
+    BookingResponse getById(String id, String userId, String role);
 
-    List<Booking> getAll();
+    List<BookingResponse> getMyUpcoming(String userId, String role);
 
-    List<Booking> getByDoctorId(String doctorId);
+    List<BookingResponse> getMyHistory(String userId, String role);
 
-    List<Booking> getByPatientId(String patientId);
+    BookingResponse cancel(String id, String userId, String role);
+
+    BookingResponse confirm(String id, String userId, String role);
 }

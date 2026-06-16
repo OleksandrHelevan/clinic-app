@@ -1,0 +1,10 @@
+server:
+  port: 8761
+
+logging:
+  level:
+    root: INFO
+    com.clinicapp: WARN
+    org.apache.kafka: ERROR
+    org.springframework.security: WARN
+    org.springframework: WARN

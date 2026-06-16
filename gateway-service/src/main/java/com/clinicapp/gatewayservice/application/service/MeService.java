@@ -16,78 +16,47 @@ public class MeService {
 
     private final WebClient.Builder webClient;
 
-    public Mono<MeResponse> getMe(String userId) {
+    public Mono<MeResponse> getMe(String userId, String role) {
 
         WebClient client = webClient.build();
 
-        Mono<MeContextResponse> contextMono = client
-                .get()
-                .uri("http://auth-service/api/v1/internal/me-context")
-                .header("X-User-Id", userId)
-                .header("X-Gateway-Token", "gateway-service-token")
-                .retrieve()
-                .bodyToMono(MeContextResponse.class);
-        // auth-service НЕ має fallback — без контексту нема змісту продовжувати
+        Mono<ProfileResponse> profileMono = switch (role) {
 
-        return contextMono.flatMap(ctx -> {
+            case "DOCTOR" -> client.get()
+                    .uri("http://doctor-service/api/v1/doctors/me")
+                    .header("X-User-Id", userId)
+                    .header("X-Gateway-Token", "gateway-service-token")
+                    .retrieve()
+                    .bodyToMono(ProfileResponse.class)
+                    .onErrorResume(ex -> Mono.just(ProfileResponse.empty()));
 
-            String role = ctx.role();
+            case "PATIENT" -> client.get()
+                    .uri("http://patient-service/api/v1/patients/me")
+                    .header("X-User-Id", userId)
+                    .header("X-Gateway-Token", "gateway-service-token")
+                    .retrieve()
+                    .bodyToMono(ProfileResponse.class)
+                    .onErrorResume(ex -> Mono.just(ProfileResponse.empty()));
 
-            Mono<ProfileResponse> profileMono = switch (role) {
+            default -> Mono.just(ProfileResponse.empty());
+        };
 
-                case "DOCTOR" -> client
-                        .get()
-                        .uri("http://doctor-service/api/v1/doctors/{id}", ctx.userId())
-                        .retrieve()
-                        .bodyToMono(ProfileResponse.class)
-                        .onErrorResume(ex -> {
-                            return Mono.just(ProfileResponse.empty());
-                        });
+        Mono<List<BookingResponse>> bookingsMono = switch (role) {
 
-                case "PATIENT" -> client
-                        .get()
-                        .uri("http://patient-service/api/v1/patients/{id}", ctx.userId())
-                        .retrieve()
-                        .bodyToMono(ProfileResponse.class)
-                        .onErrorResume(ex -> {
-                            return Mono.just(ProfileResponse.empty());
-                        });
+            case "DOCTOR", "PATIENT" -> client.get()
+                    .uri("http://booking-service/api/v1/bookings/me/upcoming")
+                    .header("X-User-Id", userId)
+                    .header("X-Role", role)
+                    .header("X-Gateway-Token", "gateway-service-token")
+                    .retrieve()
+                    .bodyToFlux(BookingResponse.class)
+                    .collectList()
+                    .onErrorResume(ex -> Mono.just(List.of()));
 
-                default -> Mono.just(ProfileResponse.empty());
-            };
+            default -> Mono.just(List.of());
+        };
 
-            Mono<List<BookingResponse>> bookingsMono = switch (role) {
-
-                case "DOCTOR" -> client
-                        .get()
-                        .uri("http://booking-service/api/v1/bookings/doctor/{id}", ctx.userId())
-                        .retrieve()
-                        .bodyToFlux(BookingResponse.class)
-                        .collectList()
-                        .onErrorResume(ex -> {
-                            return Mono.just(List.of());
-                        });
-
-                case "PATIENT" -> client
-                        .get()
-                        .uri("http://booking-service/api/v1/bookings/patient/{id}", ctx.userId())
-                        .retrieve()
-                        .bodyToFlux(BookingResponse.class)
-                        .collectList()
-                        .onErrorResume(ex -> {
-                            return Mono.just(List.of());
-                        });
-
-                default -> Mono.just(List.of());
-            };
-
-            return Mono.zip(profileMono, bookingsMono)
-                    .map(tuple -> new MeResponse(
-                            ctx.userId(),
-                            ctx.role(),
-                            tuple.getT1(),
-                            tuple.getT2()
-                    ));
-        });
+        return Mono.zip(profileMono, bookingsMono)
+                .map(tuple -> new MeResponse(userId, role, tuple.getT1(), tuple.getT2()));
     }
 }
