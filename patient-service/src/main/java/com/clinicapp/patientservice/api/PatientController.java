@@ -3,6 +3,7 @@ package com.clinicapp.patientservice.api;
 import com.clinicapp.patientservice.application.dto.CreatePatientRequest;
 import com.clinicapp.common.dto.PatientResponse;
 import com.clinicapp.patientservice.application.service.PatientService;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class PatientController {
 
     @GetMapping("/me")
     public ResponseEntity<PatientResponse> getMyProfile(
-            @RequestHeader(value = "X-User-Id") String userId) {
+            @Parameter(hidden = true) @RequestHeader(value = "X-User-Id") String userId) {
         log.info("Fetching own patient profile for userId: {}", userId);
         return new ResponseEntity<>(patientService.getPatientById(userId), HttpStatus.OK);
     }
@@ -33,7 +34,7 @@ public class PatientController {
     @PostMapping("/profile")
     public ResponseEntity<PatientResponse> updateMyProfile(
             @RequestBody CreatePatientRequest request,
-            @RequestHeader(value = "X-User-Id") String userId) {
+            @Parameter(hidden = true) @RequestHeader(value = "X-User-Id") String userId) {
         log.info("Creating or updating patient profile for userId: {}", userId);
         return new ResponseEntity<>(patientService.createPatient(request), HttpStatus.CREATED);
     }

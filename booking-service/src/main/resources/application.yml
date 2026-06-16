@@ -4,5 +4,11 @@ spring:
   mongodb:
     uri: ${SPRING_DATA_MONGODB_URI}
     database: ${SPRING_DATA_MONGODB_NAME}
+
 server:
   port: ${SERVER_PORT:8084}
+
+clinic:
+  services:
+    doctor-service-url: ${DOCTOR_SERVICE_URL:http://doctor-service}
+    patient-service-url: ${PATIENT_SERVICE_URL:http://patient-service}

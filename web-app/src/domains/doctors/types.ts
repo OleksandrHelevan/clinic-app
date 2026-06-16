@@ -1,7 +1,17 @@
-import type {PaginationResponse} from "../../types/pagination.ts";
+import type { PaginationResponse } from "../../types/pagination.ts";
 
 export type Specialization =
-    "THERAPIST" | "DERMATOLOGIST" | "CARDIOLOGIST" | "NEUROLOGIST" | "SURGEON" | "PEDIATRICIAN"
+    | "THERAPIST"
+    | "DERMATOLOGIST"
+    | "CARDIOLOGIST"
+    | "NEUROLOGIST"
+    | "SURGEON"
+    | "PEDIATRICIAN"
+    | "OPHTHALMOLOGIST"
+    | "ORTHOPEDIST"
+    | "ENT"
+    | "GASTROENTEROLOGIST"
+    | "ENDOCRINOLOGIST";
 
 export interface ProfileResponse {
     avatarUrl: string | null;
@@ -12,10 +22,10 @@ export interface ProfileResponse {
     updatedAt: string | null;
 }
 
-export interface UserResponse extends ProfileResponse{
+export interface UserResponse extends ProfileResponse {
     id: string;
     specialization: Specialization | null;
     email: string;
 }
 
-export type GetDoctorsResponse = PaginationResponse<UserResponse>
+export type GetDoctorsResponse = PaginationResponse<UserResponse>;

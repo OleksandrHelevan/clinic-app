@@ -73,6 +73,15 @@ public class RouteConfig {
                         .filters(f -> f.rewritePath("/booking-docs/(?<segment>.*)", "/${segment}"))
                         .uri("lb://booking-service"))
 
+                .route("ai-service", r -> r.path("/api/v1/ai/**")
+                        .filters(f -> f.filter(authFilter.apply(new AuthenticationFilter.Config()))
+                                .requestRateLimiter(c -> c.setRateLimiter(standardRateLimiter()).setKeyResolver(userKeyResolver())))
+                        .uri("lb://ai-service"))
+
+                .route("ai-service-docs", r -> r.path("/ai-docs/**")
+                        .filters(f -> f.rewritePath("/ai-docs/(?<segment>.*)", "/${segment}"))
+                        .uri("lb://ai-service"))
+
                 .build();
     }
 

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.clinicapp.common.dto.MeContextResponse;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 
 @RestController
@@ -18,6 +19,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/sign-up")
+    @SecurityRequirements
     public ResponseEntity<UserResponse> register(
             @Valid @RequestBody SignUpRequest request
     ) {
@@ -27,6 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @SecurityRequirements
     public ResponseEntity<LoginResponse> login(
             @Valid @RequestBody LoginRequest request
     ) {

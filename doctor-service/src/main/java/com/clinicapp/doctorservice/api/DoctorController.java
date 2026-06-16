@@ -1,9 +1,9 @@
 package com.clinicapp.doctorservice.api;
 
 import com.clinicapp.doctorservice.application.dto.AddDoctorProfileRequest;
-import com.clinicapp.doctorservice.application.dto.DoctorResponse;
+import com.clinicapp.common.dto.DoctorResponse;
 import com.clinicapp.doctorservice.application.service.DoctorService;
-import com.clinicapp.doctorservice.domain.doctor.Specialization;
+import com.clinicapp.common.dto.Specialization;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

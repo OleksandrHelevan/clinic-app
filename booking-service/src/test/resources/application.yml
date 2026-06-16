@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/booking_test_db
+      database: booking_test_db
+
+clinic:
+  services:
+    doctor-service-url: http://localhost:8083
+    patient-service-url: http://localhost:8082

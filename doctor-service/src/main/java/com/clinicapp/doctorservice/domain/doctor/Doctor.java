@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.Instant;
-import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -28,7 +27,7 @@ public class Doctor {
     private String lastName;
 
     @Indexed
-    private Specialization specialization;
+    private com.clinicapp.common.dto.Specialization specialization;
 
     @Indexed(unique = true)
     private String email;

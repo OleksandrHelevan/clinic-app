@@ -1,6 +1,6 @@
 package com.clinicapp.doctorservice.application.dto;
 
-import com.clinicapp.doctorservice.domain.doctor.Specialization;
+import com.clinicapp.common.dto.Specialization;
 import jakarta.validation.constraints.*;
 import lombok.*;
 

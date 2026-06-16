@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: ai-service
+  mongodb:
+    uri: ${SPRING_DATA_MONGODB_URI}
+    database: ${SPRING_DATA_MONGODB_NAME}
+
+server:
+  port: ${SERVER_PORT:8086}
+
+gemini:
+  api:
+    key: ${GEMINI_API_KEY}
+    url: https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      show-details: always
+services:
+  doctor-service:
+    url: http://doctor-service:8083

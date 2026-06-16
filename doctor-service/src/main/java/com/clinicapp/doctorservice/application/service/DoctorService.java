@@ -1,8 +1,8 @@
 package com.clinicapp.doctorservice.application.service;
 
 import com.clinicapp.doctorservice.application.dto.AddDoctorProfileRequest;
-import com.clinicapp.doctorservice.application.dto.DoctorResponse;
-import com.clinicapp.doctorservice.domain.doctor.Specialization;
+import com.clinicapp.common.dto.DoctorResponse;
+import com.clinicapp.common.dto.Specialization;
 import org.springframework.data.domain.Page;
 
 

@@ -7,6 +7,11 @@ spring:
 server:
   port: 8084
 
+clinic:
+  services:
+    doctor-service-url: http://doctor-service
+    patient-service-url: http://patient-service
+
 logging:
   level:
     com.clinicapp: WARN

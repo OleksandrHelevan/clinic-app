@@ -1,9 +1,14 @@
 package com.clinicapp.gatewayservice.application.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public record BookingResponse(
         String id,
-        LocalDateTime time,
-        String status
+        String doctorId,
+        String patientId,
+        OffsetDateTime bookedTime,
+        String description,
+        String status,
+        OffsetDateTime createdAt,
+        OffsetDateTime updatedAt
 ) {}

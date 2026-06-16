@@ -43,16 +43,10 @@ public class MeService {
 
         Mono<List<BookingResponse>> bookingsMono = switch (role) {
 
-            case "DOCTOR" -> client.get()
-                    .uri("http://booking-service/api/v1/bookings/doctor/{id}", userId)
-                    .header("X-Gateway-Token", "gateway-service-token")
-                    .retrieve()
-                    .bodyToFlux(BookingResponse.class)
-                    .collectList()
-                    .onErrorResume(ex -> Mono.just(List.of()));
-
-            case "PATIENT" -> client.get()
-                    .uri("http://booking-service/api/v1/bookings/patient/{id}", userId)
+            case "DOCTOR", "PATIENT" -> client.get()
+                    .uri("http://booking-service/api/v1/bookings/me/upcoming")
+                    .header("X-User-Id", userId)
+                    .header("X-Role", role)
                     .header("X-Gateway-Token", "gateway-service-token")
                     .retrieve()
                     .bodyToFlux(BookingResponse.class)

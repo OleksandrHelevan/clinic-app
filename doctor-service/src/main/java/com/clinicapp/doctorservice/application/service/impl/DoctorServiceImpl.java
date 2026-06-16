@@ -1,11 +1,11 @@
 package com.clinicapp.doctorservice.application.service.impl;
 
 import com.clinicapp.doctorservice.application.dto.AddDoctorProfileRequest;
-import com.clinicapp.doctorservice.application.dto.DoctorResponse;
+import com.clinicapp.common.dto.DoctorResponse;
 import com.clinicapp.doctorservice.application.mapper.DoctorMapper;
 import com.clinicapp.doctorservice.application.service.DoctorService;
 import com.clinicapp.doctorservice.domain.doctor.Doctor;
-import com.clinicapp.doctorservice.domain.doctor.Specialization;
+import com.clinicapp.common.dto.Specialization;
 import com.clinicapp.doctorservice.infrastructure.persistence.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

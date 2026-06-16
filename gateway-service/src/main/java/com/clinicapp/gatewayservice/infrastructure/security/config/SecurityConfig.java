@@ -27,7 +27,8 @@ public class SecurityConfig {
                                 "/auth-docs/**",
                                 "/patient-docs/**",
                                 "/doctor-docs/**",
-                                "/booking-docs/**"
+                                "/booking-docs/**",
+                                "/ai-docs/**"
                         ).permitAll()
                         .pathMatchers("/actuator/**").permitAll()
                         .anyExchange().permitAll()

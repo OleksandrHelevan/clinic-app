@@ -229,6 +229,28 @@ services:
     networks:
       - clinic-network
 
+  ai-service:
+    profiles: [ "dev" ]
+    build:
+      context: .
+      dockerfile: ai-service/Dockerfile
+    container_name: ai-service
+    ports:
+      - "${AI_SERVICE_PORT}:${AI_SERVICE_PORT}"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SERVER_PORT: ${AI_SERVICE_PORT}
+      SPRING_DATA_MONGODB_URI: ${MONGO_URI}
+      SPRING_DATA_MONGODB_NAME: ${AI_DATA_MONGODB_NAME}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    networks:
+      - clinic-network
+    depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+
 networks:
   clinic-network:
     driver: bridge

@@ -1,69 +1,89 @@
-import React, { useState } from "react";
+import { useState } from 'react';
+import {
+  Badge,
+  InfoItem,
+  InfoLabel,
+  InfoValue,
+  ProfileAvatarFallback,
+  ProfileAvatarImg,
+  ProfileCard,
+  ProfileHeader,
+  ProfileInfoGrid,
+  ProfileTitles,
+  SpecializationText,
+} from './ProfileInfoCard.styles';
 
 interface ProfileInfoCardProps {
-    user: {
-        role: string;
-        profile: {
-            firstName: string;
-            lastName: string;
-            email: string;
-            phone?: string;
-            avatarUrl?: string;
-            specialization?: string;
-        };
+  user: {
+    role: string;
+    profile: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phone?: string;
+      avatarUrl?: string;
+      specialization?: string;
     };
+  };
 }
 
-export const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({ user }) => {
-    const { profile, role } = user;
-    const [imageError, setImageError] = useState(false);
+export const ProfileInfoCard = ({ user }: ProfileInfoCardProps) => {
+  const { profile, role } = user;
+  const [imageError, setImageError] = useState(false);
 
-    const getRoleLabel = (r?: string) => {
-        switch (r) {
-            case "PATIENT": return "Patient";
-            case "DOCTOR": return "Doctor";
-            case "ADMIN": return "Admin";
-            default: return r || "Unknown";
-        }
-    };
+  const getRoleLabel = (r?: string) => {
+    switch (r) {
+      case 'PATIENT':
+        return 'Patient';
+      case 'DOCTOR':
+        return 'Doctor';
+      case 'ADMIN':
+        return 'Admin';
+      default:
+        return r || 'Unknown';
+    }
+  };
 
-    return (
-        <div className="profile-card">
-            <div className="profile-header">
-                {profile.avatarUrl && !imageError ? (
-                    <img
-                        className="profile-avatar-img"
-                        src={profile.avatarUrl}
-                        alt={`${profile.firstName} ${profile.lastName}`}
-                        onError={() => setImageError(true)}
-                    />
-                ) : (
-                    <div className="profile-avatar-fallback">
-                        {profile.firstName ? profile.firstName.charAt(0).toUpperCase() : profile.email.charAt(0).toUpperCase()}
-                    </div>
-                )}
+  return (
+    <ProfileCard>
+      <ProfileHeader>
+        {profile.avatarUrl && !imageError ? (
+          <ProfileAvatarImg
+            src={profile.avatarUrl}
+            alt={`${profile.firstName} ${profile.lastName}`}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <ProfileAvatarFallback>
+            {profile.firstName
+              ? profile.firstName.charAt(0).toUpperCase()
+              : profile.email.charAt(0).toUpperCase()}
+          </ProfileAvatarFallback>
+        )}
 
-                <div className="profile-titles">
-                    <h2>{profile.firstName} {profile.lastName}</h2>
-                    <span className="badge">{getRoleLabel(role)}</span>
-                    {role === "DOCTOR" && profile.specialization && (
-                        <span className="specialization-text">{profile.specialization}</span>
-                    )}
-                </div>
-            </div>
+        <ProfileTitles>
+          <h2>
+            {profile.firstName} {profile.lastName}
+          </h2>
+          <Badge>{getRoleLabel(role)}</Badge>
+          {role === 'DOCTOR' && profile.specialization && (
+            <SpecializationText>{profile.specialization}</SpecializationText>
+          )}
+        </ProfileTitles>
+      </ProfileHeader>
 
-            <div className="profile-info-grid">
-                <div className="info-item">
-                    <span className="info-label">Email</span>
-                    <span className="info-value">{profile.email}</span>
-                </div>
-                {profile.phone && (
-                    <div className="info-item">
-                        <span className="info-label">Phone</span>
-                        <span className="info-value">{profile.phone}</span>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
+      <ProfileInfoGrid>
+        <InfoItem>
+          <InfoLabel>Email</InfoLabel>
+          <InfoValue>{profile.email}</InfoValue>
+        </InfoItem>
+        {profile.phone && (
+          <InfoItem>
+            <InfoLabel>Phone</InfoLabel>
+            <InfoValue>{profile.phone}</InfoValue>
+          </InfoItem>
+        )}
+      </ProfileInfoGrid>
+    </ProfileCard>
+  );
 };

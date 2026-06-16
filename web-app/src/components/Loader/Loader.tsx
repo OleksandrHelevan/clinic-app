@@ -1,10 +1,7 @@
-import './Loader.css';
+import { LoaderContainer, Spinner } from './Loader.styles';
 
-
-export const Loader = () => {
-    return (
-        <div className="loader-container">
-            <div className="spinner"></div>
-        </div>
-    );
-};
+export const Loader = () => (
+  <LoaderContainer>
+    <Spinner />
+  </LoaderContainer>
+);

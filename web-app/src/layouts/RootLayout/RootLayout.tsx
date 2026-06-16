@@ -1,23 +1,35 @@
-import {Outlet} from "react-router-dom";
-import "./RootLayout.css";
-import {NavBar} from "../../components/NavBar/NavBar.tsx";
-import {ChatProvider} from "../../components/Chat/context/ChatProvider.tsx";
+import { Outlet } from 'react-router-dom';
+import { NavBar } from '../../components/NavBar/NavBar';
+import { ChatProvider } from '../../components/Chat/context/ChatProvider';
+import AnimatedBackground from '../../components/AnimatedBackground/AnimatedBackground';
+import {
+  AeroViewport,
+  AppHeader,
+  MainContainer,
+  PageShell,
+} from '../../styles/layout.styles';
 
 export default function RootLayout() {
-    const userId = localStorage.getItem("userId") || "";
+  const userId = localStorage.getItem('userId') || '';
 
-    return (
-        <ChatProvider currentUserId={userId}>
-            <header className="header">
-                <NavBar
-                    isAuthenticated={Boolean(userId.trim())}
-                    currentUserId={userId}
-                />
-            </header>
+  return (
+    <AeroViewport>
+      <AnimatedBackground />
 
-            <main className="main-container">
-                <Outlet/>
-            </main>
-        </ChatProvider>
-    );
+      <ChatProvider currentUserId={userId}>
+        <PageShell>
+          <AppHeader>
+            <NavBar
+              isAuthenticated={Boolean(userId.trim())}
+              currentUserId={userId}
+            />
+          </AppHeader>
+
+          <MainContainer>
+            <Outlet />
+          </MainContainer>
+        </PageShell>
+      </ChatProvider>
+    </AeroViewport>
+  );
 }

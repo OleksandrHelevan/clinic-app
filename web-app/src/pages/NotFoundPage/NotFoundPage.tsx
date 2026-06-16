@@ -1,6 +1,20 @@
+import { Link } from 'react-router-dom';
+import {
+  NotFoundCard,
+  NotFoundCode,
+  NotFoundPageRoot,
+  NotFoundText,
+  NotFoundTitle,
+} from './NotFoundPage.styles';
+
 export const NotFoundPage = () => (
-    <>
-        <h1>Not found</h1>
-        <h2>404</h2>
-    </>
-)
+  <NotFoundPageRoot>
+    <NotFoundCard>
+      <NotFoundCode>404</NotFoundCode>
+      <NotFoundTitle>Сторінку не знайдено</NotFoundTitle>
+      <NotFoundText>
+        Перейдіть на <Link to="/">головну</Link>
+      </NotFoundText>
+    </NotFoundCard>
+  </NotFoundPageRoot>
+);
