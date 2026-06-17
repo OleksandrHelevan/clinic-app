@@ -409,14 +409,17 @@ export const AiChatMessages = styled.div`
 `;
 
 export const AiChatBubble = styled.div<{ isUser: boolean }>`
-  max-width: 80%;
+  max-width: ${({ isUser }) => (isUser ? '80%' : '100%')};
+  width: ${({ isUser }) => (isUser ? 'fit-content' : '100%')};
+  box-sizing: border-box;
+  margin-left: ${({ isUser }) => (isUser ? 'auto' : '0')};
   padding: 10px 14px;
   border-radius: ${({ isUser }) => isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px'};
   background: ${({ isUser }) => isUser
-    ? 'linear-gradient(135deg, #4285F4, #8AB4F8)'
-    : 'rgba(255,255,255,0.12)'};
+      ? 'linear-gradient(135deg, #4285F4, #8AB4F8)'
+      : 'rgba(255,255,255,0.12)'};
   color: ${({ isUser }) => isUser ? 'white' : 'inherit'};
-  align-self: ${({ isUser }) => isUser ? 'flex-end' : 'flex-start'};
+  align-self: ${({ isUser }) => isUser ? 'flex-end' : 'stretch'};
   font-size: 14px;
   line-height: 1.5;
   white-space: pre-wrap;

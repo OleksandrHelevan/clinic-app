@@ -18,6 +18,7 @@ import {
   SignUpPageRoot,
   SignUpWrapper,
 } from './SignUpPage.styles';
+import {Logo} from "../../assets/Logo.tsx";
 
 export default function SignUpPage() {
   const { mutate } = useSignUp();
@@ -29,48 +30,49 @@ export default function SignUpPage() {
   return (
       <SignUpPageRoot>
         <SignUpWrapper>
+
           <Form<SignUpRequest>
               onSubmit={onSubmit}
-              title="Реєстрація"
-              subtitle="Доєднайся до платформи"
+              logo={<Logo />}
+              title="Sign Up"
               maxWidth={450}
           >
             {({ register, formState: { errors } }) => (
                 <>
                   <TextInput
                       name="email"
-                      label="Електронна пошта"
+                      label="Email"
                       type="email"
                       placeholder="doctor@avyro.com"
                       rules={{
-                        required: 'Введіть email',
-                        pattern: { value: /^\S+@\S+$/i, message: 'Некоректний формат' },
+                        required: 'Enter email',
+                        pattern: { value: /^\S+@\S+$/i, message: 'Wrong format' },
                       }}
                   />
 
                   <TextInput
                       name="password"
-                      label="Пароль"
+                      label="Password"
                       type="password"
                       placeholder="••••••••"
                       rules={{
-                        required: 'Вигадайте пароль',
-                        minLength: { value: 6, message: 'Мінімум 6 символів' },
+                        required: 'New password',
+                        minLength: { value: 6, message: 'Min 6 characters' },
                       }}
                   />
 
                   <RoleField>
-                    <RoleLabel>Ви реєструєтесь як:</RoleLabel>
+                    <RoleLabel>You register as:</RoleLabel>
                     <RadioGroup>
                       <RadioOption>
-                        <input type="radio" value="PATIENT" {...register('role', { required: 'Оберіть роль' })} />
+                        <input type="radio" value="PATIENT" {...register('role', { required: 'Choose role' })} />
                         <RadioCustom />
-                        <RadioText>Пацієнт</RadioText>
+                        <RadioText>Patient</RadioText>
                       </RadioOption>
                       <RadioOption>
-                        <input type="radio" value="DOCTOR" {...register('role', { required: 'Оберіть роль' })} />
+                        <input type="radio" value="DOCTOR" {...register('role', { required: 'Choose role' })} />
                         <RadioCustom />
-                        <RadioText>Лікар</RadioText>
+                        <RadioText>Doctor</RadioText>
                       </RadioOption>
                     </RadioGroup>
                     {errors.role && <RoleError>{errors.role.message as string}</RoleError>}
@@ -78,11 +80,11 @@ export default function SignUpPage() {
 
                   <SignUpFormFooter>
                     <Button variant="primary" type="submit" fullWidth>
-                      Зареєструватись
+                      Sign Up
                     </Button>
                     <BackToLogin>
-                      <p>Вже маєте акаунт?</p>
-                      <Link to={LOGIN_PATH}>Увійти</Link>
+                      <p>Already have account?</p>
+                      <Link to={LOGIN_PATH}>Login</Link>
                     </BackToLogin>
                   </SignUpFormFooter>
                 </>

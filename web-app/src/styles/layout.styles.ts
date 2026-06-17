@@ -43,6 +43,6 @@ export const AuthPage = styled.div`
 
 export const AuthWrapper = styled.div`
   display: flex;
-  width: 100%;
+    width: 100%;
   justify-content: center;
 `;

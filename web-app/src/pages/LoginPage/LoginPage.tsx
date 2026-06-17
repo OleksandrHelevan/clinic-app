@@ -25,42 +25,41 @@ export default function LoginPage() {
       <LoginWrapper>
         <Form<LoginRequest>
           onSubmit={onSubmit}
-          title="Вхід в Avyro"
-          subtitle="Авторизуйтесь"
-          maxWidth={450}
+          title="Avyro"
+          maxWidth={480}
           logo={<Logo />}
         >
           {() => (
             <>
               <TextInput
                 name="email"
-                label="Електронна пошта"
+                label="Email"
                 type="email"
                 placeholder="doctor@avyro.com"
                 rules={{
-                  required: "Email обов'язковий",
-                  pattern: { value: /^\S+@\S+$/i, message: 'Некоректний email' },
+                  required: "Email is required",
+                  pattern: { value: /^\S+@\S+$/i, message: 'Wrong email' },
                 }}
               />
 
               <TextInput
                 name="password"
-                label="Пароль"
+                label="Password"
                 type="password"
                 placeholder="••••••••"
                 rules={{
-                  required: "Пароль обов'язковий",
-                  minLength: { value: 6, message: 'Мінімум 6 символів' },
+                  required: "Password required",
+                  minLength: { value: 6, message: 'Min 6 characters' },
                 }}
               />
 
               <LoginFormFooter>
                 <Button variant="primary" type="submit" fullWidth disabled={isPending}>
-                  {isPending ? 'Вхід...' : 'Увійти'}
+                  {isPending ? 'Loading...' : 'Log In'}
                 </Button>
                 <SignUpFlow>
-                  <p>Нема акаунту?</p>
-                  <Link to={SIGNUP_PATH}>Зареєструватись</Link>
+                  <p>Do not have account?</p>
+                  <Link to={SIGNUP_PATH}>Sign up</Link>
                 </SignUpFlow>
               </LoginFormFooter>
             </>

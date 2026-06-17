@@ -29,3 +29,12 @@ export interface UserResponse extends ProfileResponse {
 }
 
 export type GetDoctorsResponse = PaginationResponse<UserResponse>;
+export interface RecommendedDoctor {
+    id: string;
+    firstName: string;
+    lastName: string;
+    specialization: string;
+    photoUrl?: string;
+    rating?: number;
+    experience?: number;
+}

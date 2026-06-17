@@ -44,13 +44,12 @@ export const ChatInboxView = ({ currentUserId, onSelectChat, onSelectAi, onClose
         </ChatHeader>
 
         <ChatMessages compact>
-          {/* AI Асистент завжди зверху */}
           <ChatInboxItem onClick={onSelectAi} style={{ borderLeft: '3px solid #4285F4' }}>
             <InboxItemHeader style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <GeminiLogoSmall />
-              <strong>AI Асистент</strong>
+              <strong>AI Assistant</strong>
             </InboxItemHeader>
-            <InboxItemContent>Запитати про симптоми</InboxItemContent>
+            <InboxItemContent>Ask about symptoms</InboxItemContent>
           </ChatInboxItem>
 
           {isLoading && <Loader />}
